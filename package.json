@@ -10,12 +10,15 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "dotenv": "^16.4.7",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "i": "^0.3.7",
+    "jsonwebtoken": "^9.0.2",
     "npm": "^11.2.0",
     "pg": "^8.14.1",
     "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.7",
     "sequelize-auto": "^0.8.8"
   }
 }

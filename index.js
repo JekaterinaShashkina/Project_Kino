@@ -1,11 +1,17 @@
-const express = require('express')
-const app = express()
+require('dotenv').config();
+const express = require('express');
+const app = express();
 
-// Middleware for parsing JSON 
-app.use(express.json()) 
+console.log("JWT_SECRET:", process.env.JWT_SECRET); 
 
-// The port on which the server will run 
-const PORT = process.env.PORT || 3000 
+const authRoutes = require('./routes/auth.routes');
 
-// Start the server 
-app.listen(PORT, () => { console.log(`Server is running on port ${PORT}`); }) 
+
+
+
+app.use(express.json()); 
+app.use('/', authRoutes);
+
+app.listen(3001, () => {
+  console.log('port 3001');
+});

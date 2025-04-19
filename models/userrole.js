@@ -22,10 +22,6 @@ module.exports = function(sequelize, DataTypes) {
         model: 'role',
         key: 'roleid'
       }
-    },
-    rolename: {
-      type: DataTypes.STRING(20),
-      allowNull: false
     }
   }, {
     sequelize,
