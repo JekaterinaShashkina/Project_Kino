@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
 const db = require("../config/database"); 
 const initModels = require("../models/init-models");
 const models = initModels(db); 
@@ -10,9 +11,6 @@ const SECRET = process.env.JWT_SECRET;
 const User = models.useraccount;
 const Role = models.role;
 const UserRole = models.userrole;
-
-
-
 
 exports.register = async (req, res) => {
   try {
