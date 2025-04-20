@@ -7,12 +7,14 @@ console.log("JWT_SECRET:", process.env.JWT_SECRET);
 require('./swagger')(app); 
 
 const authRoutes = require('./routes/auth.routes');
+const catRoutes = require('./routes/cat.routes')
 
 
 
 
 app.use(express.json()); 
 app.use('/', authRoutes);
+app.use('/', catRoutes);
 
 app.listen(3001, () => {
   console.log('port 3001');
