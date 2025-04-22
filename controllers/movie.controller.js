@@ -73,8 +73,6 @@ exports.createMovie = async (req, res) => {
   }
 };
 
-
-
 exports.updateMovie = async (req, res) => {
   const t = await db.transaction();
   try {
@@ -83,9 +81,9 @@ exports.updateMovie = async (req, res) => {
 
     const { title, duration, releasedate, rating, status, movielanguage, categoryids } = req.body;
 
-
+    let foundCategories = [];
     if (categoryids && Array.isArray(categoryids)) {
-      const foundCategories = await models.category.findAll({
+      foundCategories = await models.category.findAll({
         where: { categoryid: categoryids }
       });
 
@@ -106,6 +104,9 @@ exports.updateMovie = async (req, res) => {
     if (categoryids && Array.isArray(categoryids)) {
       await movie.setCategories(categoryids, { transaction: t });
     }
+    const categoryNames = foundCategories.map(c => c.catname);
+    movie.categorynames = categoryNames;
+    await movie.save({ transaction: t });
 
     await t.commit();
     res.json({ message: 'movie is updated', movie });

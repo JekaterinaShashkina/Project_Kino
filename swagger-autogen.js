@@ -22,7 +22,11 @@ const config = {
         {
             name: 'Hall',
             description: 'Hall endpoints',
-        }, 
+        },
+        {
+            name: 'Movie',
+            description: 'Movie endpoints',
+        },  
     ],
 
     securityDefinitions: {

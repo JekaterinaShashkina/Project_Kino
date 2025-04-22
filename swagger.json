@@ -20,10 +20,9 @@
       "name": "Hall",
       "description": "Hall endpoints"
     },
-
     {
       "name": "Movie",
-      "description": "Film endpoints"
+      "description": "Movie endpoints"
     }
   ],
   "schemes": [
@@ -375,106 +374,211 @@
           }
         }
       }
-    },    "/movies": {
-  "get": {
-    "tags": ["Movie"],
-    "summary": "Get all movies",
-    "description": "Returns a list of all movies",
-    "responses": {
-      "200": { "description": "OK" },
-      "500": { "description": "Internal Server Error" }
-    }
-  },
-  "post": {
-    "tags": ["Movie"],
-    "summary": "Create a movie",
-    "description": "Creates a new movie and links it with categories",
-    "parameters": [{
-      "in": "body",
-      "name": "body",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "title": { "type": "string" },
-          "duration": { "type": "integer" },
-          "releasedate": { "type": "string", "format": "date" },
-          "rating": { "type": "number", "format": "float" },
-          "status": { "type": "string" },
-          "movielanguage": { "type": "string" },
-          "categoryids": {
-            "type": "array", "items": { "type": "integer" }
-          }
-        }
-      }
-    }],
-    "responses": {
-      "201": { "description": "Created" },
-      "400": { "description": "Bad Request" },
-      "500": { "description": "Internal Server Error" }
-    }
-  }
-},
-"/movies/{id}": {
-  "get": {
-    "tags": ["Movie"],
-    "summary": "Get movie by ID",
-    "parameters": [{ "in": "path", "name": "id", "required": true, "type": "integer" }],
-    "responses": {
-      "200": { "description": "OK" },
-      "404": { "description": "Not Found" },
-      "500": { "description": "Internal Server Error" }
-    }
-  },
-  "put": {
-    "tags": ["Movie"],
-    "summary": "Update a movie",
-    "parameters": [
-      { "in": "path", "name": "id", "required": true, "type": "integer" },
-      {
-        "in": "body", "name": "body",
-        "schema": {
-          "type": "object",
-          "properties": {
-            "title": { "type": "string" },
-            "duration": { "type": "integer" },
-            "releasedate": { "type": "string", "format": "date" },
-            "rating": { "type": "number", "format": "float" },
-            "status": { "type": "string" },
-            "movielanguage": { "type": "string" },
-            "categoryids": {
-              "type": "array", "items": { "type": "integer" }
+    },
+    "/movies": {
+      "post": {
+        "tags": [
+          "Movie"
+        ],
+        "description": "Post new movie",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "duration": {
+                  "type": "string",
+                  "example": "int"
+                },
+                "releasedate": {
+                  "type": "string",
+                  "example": "date"
+                },
+                "rating": {
+                  "type": "string",
+                  "example": "decimal"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "movielanguage": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "categoryids": {
+                  "type": "array",
+                  "example": [
+                    1,
+                    2
+                  ],
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
             }
           }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Movie"
+        ],
+        "description": "Get all movies",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
         }
       }
-    ],
-    "responses": {
-      "200": { "description": "Updated" },
-      "400": { "description": "Bad Request" },
-      "404": { "description": "Not Found" },
-      "500": { "description": "Internal Server Error" }
+    },
+    "/movies/{id}": {
+      "get": {
+        "tags": [
+          "Movie"
+        ],
+        "description": "Get movie by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Movie"
+        ],
+        "description": "Update movie",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "duration": {
+                  "type": "string",
+                  "example": "int"
+                },
+                "releasedate": {
+                  "type": "string",
+                  "example": "date"
+                },
+                "rating": {
+                  "type": "string",
+                  "example": "decimal"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "movielanguage": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "categoryids": {
+                  "type": "array",
+                  "example": [
+                    1,
+                    2
+                  ],
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Movie"
+        ],
+        "description": "Delete movie",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
-  "delete": {
-    "tags": ["Movie"],
-    "summary": "Delete a movie",
-    "parameters": [{ "in": "path", "name": "id", "required": true, "type": "integer" }],
-    "responses": {
-      "200": { "description": "Deleted" },
-      "404": { "description": "Not Found" },
-      "500": { "description": "Internal Server Error" }
-    }
-  }
-}
-
-
-
-
-
-
-
-  },
-  
   "security": [
     {
       "Bearer": []
