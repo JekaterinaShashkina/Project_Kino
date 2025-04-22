@@ -34,6 +34,23 @@ exports.createMovie = async (req, res) => {
   try {
     const { title, duration, releasedate, rating, status, movielanguage, categoryids } = req.body;
 
+
+    if (categoryids && Array.isArray(categoryids)) {
+      const existingCategories = await models.category.findAll({
+        where: { categoryid: categoryids }
+      });
+
+      const existingIds = existingCategories.map(c => c.categoryid);
+      const missingIds = categoryids.filter(id => !existingIds.includes(id));
+
+      if (missingIds.length > 0) {
+        await t.rollback();
+        return res.status(400).json({
+          error: `some categoryis is not presented: ${missingIds.join(', ')}`
+        });
+      }
+    }
+
     const movie = await models.movie.create({
       title,
       duration,
@@ -57,6 +74,7 @@ exports.createMovie = async (req, res) => {
 };
 
 
+
 exports.updateMovie = async (req, res) => {
   const t = await db.transaction();
   try {
@@ -75,7 +93,17 @@ exports.updateMovie = async (req, res) => {
     }, { transaction: t });
 
     if (categoryids && Array.isArray(categoryids)) {
-      await movie.setCategories(categoryids, { transaction: t });
+      await models.categorymovie.destroy({
+        where: { movieid: movie.movieid },
+        transaction: t
+      });
+
+      const categorymovieRecords = categoryids.map(categoryid => ({
+        movieid: movie.movieid,
+        categoryid
+      }));
+
+      await models.categorymovie.bulkCreate(categorymovieRecords, { transaction: t });
     }
 
     await t.commit();
@@ -88,18 +116,19 @@ exports.updateMovie = async (req, res) => {
 };
 
 exports.deleteMovie = async (req, res) => {
+  const t = await db.transaction();
   try {
     const movie = await models.movie.findByPk(req.params.id);
+    if (!movie) return res.status(404).json({ error: 'movie not found' });
 
-    if (!movie) return res.status(404).json({ error: 'error' });
+    await models.categorymovie.destroy({ where: { movieid: movie.movieid }, transaction: t });
 
+    await movie.destroy({ transaction: t });
 
-    await movie.setCategories([]); 
-
-    await movie.destroy();
-
-    res.json({ message: 'movie with catemory movie is deleted' });
+    await t.commit();
+    res.json({ message: 'movie and its category links deleted' });
   } catch (err) {
+    await t.rollback();
     console.error(err);
     res.status(500).json({ error: 'error' });
   }

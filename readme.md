@@ -1,5 +1,7 @@
 npm install jsonwebtoken bcryptjs
 
+npx nodemon index.js
+
 {
   "username": "user",
   "useremail": "1@e.11",
