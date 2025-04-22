@@ -51,6 +51,19 @@ function initModels(sequelize) {
   userrole.belongsTo(useraccount, { as: "user", foreignKey: "userid"});
   useraccount.hasMany(userrole, { as: "userroles", foreignKey: "userid"});
 
+  movie.belongsToMany(category, {
+    through: categorymovie,
+    foreignKey: "movieid",
+    otherKey: "categoryid"
+  });
+
+  category.belongsToMany(movie, {
+    through: categorymovie,
+    foreignKey: "categoryid",
+    otherKey: "movieid"
+  });
+
+
   return {
     category,
     categorymovie,

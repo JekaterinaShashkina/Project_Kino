@@ -8,11 +8,15 @@ require('./swagger')(app);
 const authRoutes = require('./routes/auth.routes');
 const catRoutes = require('./routes/cat.routes')
 const hallRoutes = require('./routes/hall.routes')
+const movieRoutes = require('./routes/movie.routes');
+
+
 
 app.use(express.json()); 
 app.use('/', authRoutes);
 app.use('/', catRoutes);
 app.use('/', hallRoutes);
+app.use('/', movieRoutes);
 
 
 app.listen(3001, () => {
