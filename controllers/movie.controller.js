@@ -83,6 +83,17 @@ exports.updateMovie = async (req, res) => {
 
     const { title, duration, releasedate, rating, status, movielanguage, categoryids } = req.body;
 
+
+    if (categoryids && Array.isArray(categoryids)) {
+      const foundCategories = await models.category.findAll({
+        where: { categoryid: categoryids }
+      });
+
+      if (foundCategories.length !== categoryids.length) {
+        return res.status(400).json({ error: 'One or more category are invalid' });
+      }
+    }
+
     await movie.update({
       title,
       duration,
@@ -93,27 +104,19 @@ exports.updateMovie = async (req, res) => {
     }, { transaction: t });
 
     if (categoryids && Array.isArray(categoryids)) {
-      await models.categorymovie.destroy({
-        where: { movieid: movie.movieid },
-        transaction: t
-      });
-
-      const categorymovieRecords = categoryids.map(categoryid => ({
-        movieid: movie.movieid,
-        categoryid
-      }));
-
-      await models.categorymovie.bulkCreate(categorymovieRecords, { transaction: t });
+      await movie.setCategories(categoryids, { transaction: t });
     }
 
     await t.commit();
     res.json({ message: 'movie is updated', movie });
+
   } catch (err) {
     await t.rollback();
     console.error(err);
     res.status(500).json({ error: 'error' });
   }
 };
+
 
 exports.deleteMovie = async (req, res) => {
   const t = await db.transaction();
