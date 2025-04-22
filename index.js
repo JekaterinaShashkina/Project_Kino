@@ -9,6 +9,7 @@ const authRoutes = require('./routes/auth.routes');
 const catRoutes = require('./routes/cat.routes')
 const hallRoutes = require('./routes/hall.routes')
 const movieRoutes = require('./routes/movie.routes');
+const placeRoutes = require('./routes/place.routes');
 
 
 
@@ -17,6 +18,7 @@ app.use('/', authRoutes);
 app.use('/', catRoutes);
 app.use('/', hallRoutes);
 app.use('/', movieRoutes);
+app.use('/', placeRoutes);
 
 
 app.listen(3001, () => {

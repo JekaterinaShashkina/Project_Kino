@@ -24,6 +24,11 @@
     {
       "name": "Movie",
       "description": "Film endpoints"
+    },
+
+    {
+      "name": "Place",
+      "description": "Place endpoints"
     }
   ],
   "schemes": [
@@ -463,6 +468,88 @@
       "200": { "description": "Deleted" },
       "404": { "description": "Not Found" },
       "500": { "description": "Internal Server Error" }
+    }
+  }
+},
+"/places": {
+  "get": {
+    "tags": ["Place"],
+    "summary": "Get all places",
+    "responses": {
+      "200": { "description": "List of all places" },
+      "500": { "description": "Internal server error" }
+    }
+  },
+  "post": {
+    "tags": ["Place"],
+    "summary": "Create a new place",
+    "parameters": [
+      {
+        "in": "body",
+        "name": "body",
+        "required": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "rownumber": { "type": "integer" },
+            "seatnumber": { "type": "integer" },
+            "hallid": { "type": "integer" }
+          }
+        }
+      }
+    ],
+    "responses": {
+      "201": { "description": "Place created" },
+      "500": { "description": "Internal server error" }
+    }
+  }
+},
+"/places/{id}": {
+  "get": {
+    "tags": ["Place"],
+    "summary": "Get place by ID",
+    "parameters": [
+      { "name": "id", "in": "path", "required": true, "type": "integer" }
+    ],
+    "responses": {
+      "200": { "description": "Place found" },
+      "404": { "description": "Place not found" },
+      "500": { "description": "Internal server error" }
+    }
+  },
+  "put": {
+    "tags": ["Place"],
+    "summary": "Update place by ID",
+    "parameters": [
+      { "name": "id", "in": "path", "required": true, "type": "integer" },
+      {
+        "name": "body", "in": "body", "required": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "rownumber": { "type": "integer" },
+            "seatnumber": { "type": "integer" },
+            "hallid": { "type": "integer" }
+          }
+        }
+      }
+    ],
+    "responses": {
+      "200": { "description": "Place updated" },
+      "404": { "description": "Place not found" },
+      "500": { "description": "Internal server error" }
+    }
+  },
+  "delete": {
+    "tags": ["Place"],
+    "summary": "Delete place by ID",
+    "parameters": [
+      { "name": "id", "in": "path", "required": true, "type": "integer" }
+    ],
+    "responses": {
+      "200": { "description": "Place deleted" },
+      "404": { "description": "Place not found" },
+      "500": { "description": "Internal server error" }
     }
   }
 }
