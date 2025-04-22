@@ -9,6 +9,7 @@ const authRoutes = require('./routes/auth.routes');
 const catRoutes = require('./routes/cat.routes')
 const hallRoutes = require('./routes/hall.routes')
 const movieRoutes = require('./routes/movie.routes');
+const sessionRoutes = require('./routes/session.routes')
 
 
 
@@ -17,6 +18,7 @@ app.use('/', authRoutes);
 app.use('/', catRoutes);
 app.use('/', hallRoutes);
 app.use('/', movieRoutes);
+app.use('/', sessionRoutes)
 
 
 app.listen(3001, () => {

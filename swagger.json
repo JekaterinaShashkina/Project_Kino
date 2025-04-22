@@ -23,6 +23,10 @@
     {
       "name": "Movie",
       "description": "Movie endpoints"
+    },
+    {
+      "name": "Session",
+      "description": "Session endpoints"
     }
   ],
   "schemes": [
@@ -571,6 +575,59 @@
           },
           "404": {
             "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/sessions": {
+      "get": {
+        "tags": [
+          "Session"
+        ],
+        "description": "Get all sessions",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Session"
+        ],
+        "description": "Post new session",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "starttime": {
+                  "example": "any"
+                },
+                "hallid": {
+                  "example": "any"
+                },
+                "movieid": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "500": {
             "description": "Internal Server Error"

@@ -27,6 +27,10 @@ const config = {
             name: 'Movie',
             description: 'Movie endpoints',
         },  
+        {
+            name: 'Session',
+            description: 'Session endpoints',
+        }, 
     ],
 
     securityDefinitions: {
