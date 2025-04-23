@@ -29,18 +29,17 @@
       "description": "Session endpoints"
     },
     {
-      "name": "Place",
-      "description": "Place endpoints"
-    },
-    {
       "name": "Price",
       "description": "Price endpoints"
+    },
+    {
+      "name": "Place",
+      "description": "Place endpoints"
     },
     {
       "name": "Ticket",
       "description": "Ticket endpoints"
     }
-
   ],
   "schemes": [
     "http",
@@ -227,6 +226,22 @@
           },
           "404": {
             "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Get all users",
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "500": {
             "description": "Internal Server Error"
@@ -595,6 +610,308 @@
         }
       }
     },
+    "/places": {
+      "post": {
+        "tags": [
+          "Place"
+        ],
+        "description": "Post place",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "rownumber": {
+                  "example": "any"
+                },
+                "seatnumber": {
+                  "example": "any"
+                },
+                "hallid": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Place"
+        ],
+        "description": "Get all places",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/places/{id}": {
+      "get": {
+        "tags": [
+          "Place"
+        ],
+        "description": "Get place by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Place"
+        ],
+        "description": "Update place",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "rownumber": {
+                  "example": "any"
+                },
+                "seatnumber": {
+                  "example": "any"
+                },
+                "hallid": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Place"
+        ],
+        "description": "Delete place",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/prices": {
+      "get": {
+        "tags": [
+          "Price"
+        ],
+        "description": "Get all prices",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Price"
+        ],
+        "description": "Create new price",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "price": {
+                  "example": "any"
+                },
+                "sessionid": {
+                  "example": "any"
+                },
+                "placeid": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/prices/{id}": {
+      "get": {
+        "tags": [
+          "Price"
+        ],
+        "description": "Get price by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Price"
+        ],
+        "description": "Update price",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "price": {
+                  "example": "any"
+                },
+                "sessionid": {
+                  "example": "any"
+                },
+                "placeid": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Price"
+        ],
+        "description": "Delete price",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/sessions": {
       "get": {
         "tags": [
@@ -648,278 +965,191 @@
         }
       }
     },
-    
-"/places": {
-  "get": {
-    "tags": ["Place"],
-    "summary": "Get all places",
-    "responses": {
-      "200": { "description": "List of all places" },
-      "500": { "description": "Internal server error" }
-    }
-  },
-  "post": {
-    "tags": ["Place"],
-    "summary": "Create a new place",
-    "parameters": [
-      {
-        "in": "body",
-        "name": "body",
-        "required": true,
-        "schema": {
-          "type": "object",
-          "properties": {
-            "rownumber": { "type": "integer" },
-            "seatnumber": { "type": "integer" },
-            "hallid": { "type": "integer" }
+    "/sessions/date/{date}": {
+      "get": {
+        "tags": [
+          "Session"
+        ],
+        "description": "Get sessions by date",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
-        }
-      }
-    ],
-    "responses": {
-      "201": { "description": "Place created" },
-      "500": { "description": "Internal server error" }
-    }
-  }
-},
-"/places/{id}": {
-  "get": {
-    "tags": ["Place"],
-    "summary": "Get place by ID",
-    "parameters": [
-      { "name": "id", "in": "path", "required": true, "type": "integer" }
-    ],
-    "responses": {
-      "200": { "description": "Place found" },
-      "404": { "description": "Place not found" },
-      "500": { "description": "Internal server error" }
-    }
-  },
-  "put": {
-    "tags": ["Place"],
-    "summary": "Update place by ID",
-    "parameters": [
-      { "name": "id", "in": "path", "required": true, "type": "integer" },
-      {
-        "name": "body", "in": "body", "required": true,
-        "schema": {
-          "type": "object",
-          "properties": {
-            "rownumber": { "type": "integer" },
-            "seatnumber": { "type": "integer" },
-            "hallid": { "type": "integer" }
-          }
-        }
-      }
-    ],
-    "responses": {
-      "200": { "description": "Place updated" },
-      "404": { "description": "Place not found" },
-      "500": { "description": "Internal server error" }
-    }
-  },
-  "delete": {
-    "tags": ["Place"],
-    "summary": "Delete place by ID",
-    "parameters": [
-      { "name": "id", "in": "path", "required": true, "type": "integer" }
-    ],
-    "responses": {
-      "200": { "description": "Place deleted" },
-      "404": { "description": "Place not found" },
-      "500": { "description": "Internal server error" }
-    }
-  }
-}, 
-"/prices": {
-  "get": {
-    "tags": ["Price"],
-    "summary": "Get all prices",
-    "responses": {
-      "200": { "description": "List of all prices" },
-      "500": { "description": "Internal server error" }
-    }
-  },
-  "post": {
-    "tags": ["Price"],
-    "summary": "Create a new price",
-    "parameters": [
-      {
-        "in": "body",
-        "name": "body",
-        "required": true,
-        "schema": {
-          "type": "object",
-          "properties": {
-           "price": {
-  "type": "number",
-  "format": "decimal",
-  "minimum": 0.01,
-  "example": 5.50
-},
-            "sessionid": { "type": "integer" },
-            "placeid": { "type": "integer" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
-          "required": ["price", "sessionid", "placeid"]
-        }
-      }
-    ],
-    "responses": {
-      "201": { "description": "Price created" },
-      "400": { "description": "Bad request or related entity not found" },
-      "500": { "description": "Internal server error" }
-    }
-  }
-},
-"/prices/{id}": {
-  "get": {
-    "tags": ["Price"],
-    "summary": "Get price by ID",
-    "parameters": [
-      { "name": "id", "in": "path", "required": true, "type": "integer" }
-    ],
-    "responses": {
-      "200": { "description": "Price found" },
-      "404": { "description": "Price not found" },
-      "500": { "description": "Internal server error" }
-    }
-  },
-  "put": {
-    "tags": ["Price"],
-    "summary": "Update price by ID",
-    "parameters": [
-      { "name": "id", "in": "path", "required": true, "type": "integer" },
-      {
-        "in": "body",
-        "name": "body",
-        "required": true,
-        "schema": {
-          "type": "object",
-          "properties": {
-           "price": {
-  "type": "number",
-  "format": "decimal",
-  "minimum": 0.01,
-  "example": 5.50
-},
-            "sessionid": { "type": "integer" },
-            "placeid": { "type": "integer" }
-          },
-          "required": ["price", "sessionid", "placeid"]
-        }
-      }
-    ],
-    "responses": {
-      "200": { "description": "Price updated" },
-      "400": { "description": "Bad request or related entity not found" },
-      "404": { "description": "Price not found" },
-      "500": { "description": "Internal server error" }
-    }
-  },
-  "delete": {
-    "tags": ["Price"],
-    "summary": "Delete price by ID",
-    "parameters": [
-      { "name": "id", "in": "path", "required": true, "type": "integer" }
-    ],
-    "responses": {
-      "200": { "description": "Price deleted" },
-      "404": { "description": "Price not found" },
-      "500": { "description": "Internal server error" }
-    }
-  }
-}, 
-"/tickets": {
-  "post": {
-    "tags": ["Ticket"],
-    "summary": "Create a new ticket",
-    "description": "Creates a ticket with all validations",
-    "parameters": [
-      {
-        "in": "body",
-        "name": "body",
-        "required": true,
-        "schema": {
-          "type": "object",
-          "properties": {
-            "sessionid": { "type": "integer" },
-            "placeid": { "type": "integer" },
-            "userid": { "type": "integer" }
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
-    ],
-    "responses": {
-      "201": { "description": "Ticket created" },
-      "400": { "description": "Bad request" },
-      "500": { "description": "Internal server error" }
-    }
-  },
-  "get": {
-    "tags": ["Ticket"],
-    "summary": "Get all tickets",
-    "responses": {
-      "200": { "description": "List of tickets" },
-      "500": { "description": "Internal server error" }
-    }
-  }
-},
-"/tickets/{id}": {
-  "get": {
-    "tags": ["Ticket"],
-    "summary": "Get ticket by ID",
-    "parameters": [
-      { "in": "path", "name": "id", "required": true, "type": "integer" }
-    ],
-    "responses": {
-      "200": { "description": "Ticket found" },
-      "404": { "description": "Ticket not found" },
-      "500": { "description": "Internal server error" }
-    }
-  }
-},
-"/tickets/{id}/refund": {
-  "post": {
-    "tags": ["Ticket"],
-    "summary": "Refund a ticket",
-    "description": "Refunds a ticket if conditions are met",
-    "parameters": [
-      { "in": "path", "name": "id", "required": true, "type": "integer" }
-    ],
-    "responses": {
-      "200": { "description": "Ticket refunded" },
-      "400": { "description": "Cannot refund" },
-      "404": { "description": "Ticket not found" },
-      "500": { "description": "Internal server error" }
-    }
-  }
-},
-"/tickets/user/{userid}": {
-  "get": {
-    "tags": ["Ticket"],
-    "summary": "Get tickets by user ID",
-    "parameters": [
-      {
-        "name": "userid",
-        "in": "path",
-        "required": true,
-        "type": "integer"
+    },
+    "/sessions/movie/{movieid}": {
+      "get": {
+        "tags": [
+          "Session"
+        ],
+        "description": "Get sessions by movie",
+        "parameters": [
+          {
+            "name": "movieid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
-    ],
-    "responses": {
-      "200": { "description": "List of user's tickets" },
-      "404": { "description": "No tickets found" },
-      "500": { "description": "Internal server error" }
+    },
+    "/tickets": {
+      "post": {
+        "tags": [
+          "Ticket"
+        ],
+        "description": "Create new ticket",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sessionid": {
+                  "example": "any"
+                },
+                "placeid": {
+                  "example": "any"
+                },
+                "userid": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Ticket"
+        ],
+        "description": "Get all tickets",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/tickets/{id}": {
+      "get": {
+        "tags": [
+          "Ticket"
+        ],
+        "description": "Get ticket by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/tickets/{id}/refund": {
+      "post": {
+        "tags": [
+          "Ticket"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/tickets/user/{userid}": {
+      "get": {
+        "tags": [
+          "Ticket"
+        ],
+        "description": "Get ticket by user ID",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
-  }
-}
-
-
-
-
-
-
-
   },
   "security": [
     {

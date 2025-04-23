@@ -1,6 +1,9 @@
+const e = require('express');
 const db = require('../config/database');
 const initModels = require('../models/init-models');
 const models = initModels(db);
+const { Op } = require('sequelize');
+
 
 exports.getAllSessions = async (req, res) => {
     try {
@@ -51,4 +54,46 @@ exports.createSession = async (req, res) => {
       res.status(500).json({ error: 'Error creating session' });
     }
   };
-  
+
+exports.getSessionsByDate = async (req, res) => {
+    try {
+        const date = req.params.date // format YYYY-MM-DD
+        const startDate = new Date(`${date}T00:00:00`)
+        const endDate = new Date(`${date}T23:59:59`)
+
+        const sessions = await models.session.findAll({
+            where: {
+                starttime: {
+                    [Op.between]: [startDate, endDate]
+                }
+            },
+            include: [
+                {model: models.hall, as: 'hall'},
+                {model: models.movie, as: 'movie'}
+            ]
+        })
+        res.json(sessions);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error fetching sessions by date' });
+    }
+}
+
+exports.getSessionsByMovie = async (req, res) => {
+    try {
+        const {movieid} = req.params
+
+        const sessions = await models.session.findAll({
+            where: {movieid},
+            include: [
+                {model: models.hall, as: 'hall'},
+                {model: models.movie, as: 'movie'}
+            ]
+        })
+
+        res.json(sessions)
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({error: 'Error fetching sessions by movie'})
+    }
+}

@@ -8,6 +8,10 @@ router.get('/sessions', /* #swagger.tags = ['Session'] #swagger.description = "G
 router.post('/sessions', /* #swagger.tags = ['Session'] #swagger.description = "Post new session"  */ 
     sessionController.createSession
 )
+router.get('/sessions/date/:date', /* #swagger.tags = ['Session'] #swagger.description = "Get sessions by date"  */ 
+    sessionController.getSessionsByDate)
 
+router.get('/sessions/movie/:movieid', /* #swagger.tags = ['Session'] #swagger.description = "Get sessions by movie"  */ 
+    sessionController.getSessionsByMovie)
 
 module.exports = router;

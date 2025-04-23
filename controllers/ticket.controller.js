@@ -5,7 +5,6 @@ const models = initModels(db);
 
 exports.createTicket = async (req, res) => {
 
-
   const t = await db.transaction();
   try {
     const { sessionid, placeid, userid } = req.body;

@@ -38,6 +38,10 @@ router.post('/remove-role', /* #swagger.tags = ['User'] #swagger.description = "
     }
 }*/ authController.removeRoleFromUser);
 
+router.get('/users', /* #swagger.tags = ['User'] #swagger.description = "Get all users"  */ 
+    authController.getAllUsers
+)
+
 
 
 module.exports = router;

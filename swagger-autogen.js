@@ -31,6 +31,17 @@ const config = {
             name: 'Session',
             description: 'Session endpoints',
         }, 
+        {
+            name: 'Price',
+            description: 'Price endpoints',
+        },         {
+            name: 'Place',
+            description: 'Place endpoints',
+        }, 
+        {
+            name: 'Ticket',
+            description: 'Ticket endpoints',
+        }, 
     ],
 
     securityDefinitions: {
