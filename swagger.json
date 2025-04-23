@@ -634,7 +634,195 @@
           }
         }
       }
+    },
+    
+"/places": {
+  "get": {
+    "tags": ["Place"],
+    "summary": "Get all places",
+    "responses": {
+      "200": { "description": "List of all places" },
+      "500": { "description": "Internal server error" }
     }
+  },
+  "post": {
+    "tags": ["Place"],
+    "summary": "Create a new place",
+    "parameters": [
+      {
+        "in": "body",
+        "name": "body",
+        "required": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "rownumber": { "type": "integer" },
+            "seatnumber": { "type": "integer" },
+            "hallid": { "type": "integer" }
+          }
+        }
+      }
+    ],
+    "responses": {
+      "201": { "description": "Place created" },
+      "500": { "description": "Internal server error" }
+    }
+  }
+},
+"/places/{id}": {
+  "get": {
+    "tags": ["Place"],
+    "summary": "Get place by ID",
+    "parameters": [
+      { "name": "id", "in": "path", "required": true, "type": "integer" }
+    ],
+    "responses": {
+      "200": { "description": "Place found" },
+      "404": { "description": "Place not found" },
+      "500": { "description": "Internal server error" }
+    }
+  },
+  "put": {
+    "tags": ["Place"],
+    "summary": "Update place by ID",
+    "parameters": [
+      { "name": "id", "in": "path", "required": true, "type": "integer" },
+      {
+        "name": "body", "in": "body", "required": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "rownumber": { "type": "integer" },
+            "seatnumber": { "type": "integer" },
+            "hallid": { "type": "integer" }
+          }
+        }
+      }
+    ],
+    "responses": {
+      "200": { "description": "Place updated" },
+      "404": { "description": "Place not found" },
+      "500": { "description": "Internal server error" }
+    }
+  },
+  "delete": {
+    "tags": ["Place"],
+    "summary": "Delete place by ID",
+    "parameters": [
+      { "name": "id", "in": "path", "required": true, "type": "integer" }
+    ],
+    "responses": {
+      "200": { "description": "Place deleted" },
+      "404": { "description": "Place not found" },
+      "500": { "description": "Internal server error" }
+    }
+  }
+}, 
+"/prices": {
+  "get": {
+    "tags": ["Price"],
+    "summary": "Get all prices",
+    "responses": {
+      "200": { "description": "List of all prices" },
+      "500": { "description": "Internal server error" }
+    }
+  },
+  "post": {
+    "tags": ["Price"],
+    "summary": "Create a new price",
+    "parameters": [
+      {
+        "in": "body",
+        "name": "body",
+        "required": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+           "price": {
+  "type": "number",
+  "format": "decimal",
+  "minimum": 0.01,
+  "example": 5.50
+},
+            "sessionid": { "type": "integer" },
+            "placeid": { "type": "integer" }
+          },
+          "required": ["price", "sessionid", "placeid"]
+        }
+      }
+    ],
+    "responses": {
+      "201": { "description": "Price created" },
+      "400": { "description": "Bad request or related entity not found" },
+      "500": { "description": "Internal server error" }
+    }
+  }
+},
+"/prices/{id}": {
+  "get": {
+    "tags": ["Price"],
+    "summary": "Get price by ID",
+    "parameters": [
+      { "name": "id", "in": "path", "required": true, "type": "integer" }
+    ],
+    "responses": {
+      "200": { "description": "Price found" },
+      "404": { "description": "Price not found" },
+      "500": { "description": "Internal server error" }
+    }
+  },
+  "put": {
+    "tags": ["Price"],
+    "summary": "Update price by ID",
+    "parameters": [
+      { "name": "id", "in": "path", "required": true, "type": "integer" },
+      {
+        "in": "body",
+        "name": "body",
+        "required": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+           "price": {
+  "type": "number",
+  "format": "decimal",
+  "minimum": 0.01,
+  "example": 5.50
+},
+            "sessionid": { "type": "integer" },
+            "placeid": { "type": "integer" }
+          },
+          "required": ["price", "sessionid", "placeid"]
+        }
+      }
+    ],
+    "responses": {
+      "200": { "description": "Price updated" },
+      "400": { "description": "Bad request or related entity not found" },
+      "404": { "description": "Price not found" },
+      "500": { "description": "Internal server error" }
+    }
+  },
+  "delete": {
+    "tags": ["Price"],
+    "summary": "Delete price by ID",
+    "parameters": [
+      { "name": "id", "in": "path", "required": true, "type": "integer" }
+    ],
+    "responses": {
+      "200": { "description": "Price deleted" },
+      "404": { "description": "Price not found" },
+      "500": { "description": "Internal server error" }
+    }
+  }
+}
+
+
+
+
+
+
+
   },
   "security": [
     {
