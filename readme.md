@@ -32,3 +32,11 @@ http://localhost:3001/add-role
   "userid": 5,
   "roleid": 3
 }
+
+
+ALTER TABLE kino.ticket
+ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'active';
+
+ALTER TABLE kino.ticket
+ADD CONSTRAINT ticket_status_check 
+CHECK (status IN ('active', 'used', 'refunded'));

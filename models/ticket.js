@@ -34,6 +34,14 @@ module.exports = function(sequelize, DataTypes) {
     purchasetime: {
       type: DataTypes.DATE,
       allowNull: false
+    },
+    status: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+      defaultValue: 'active',
+      validate: {
+        isIn: [['active', 'used', 'refunded']]
+      }
     }
   }, {
     sequelize,

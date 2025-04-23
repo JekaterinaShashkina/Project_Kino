@@ -13,6 +13,7 @@ const sessionRoutes = require('./routes/session.routes')
 const placeRoutes = require('./routes/place.routes');
 const priceRoutes = require('./routes/price.routes');
 
+const ticketRoutes = require('./routes/ticket.routes');
 
 
 
@@ -26,6 +27,8 @@ app.use('/', movieRoutes);
 app.use('/', sessionRoutes);
 app.use('/', placeRoutes);
 app.use('/', priceRoutes);
+app.use('/',ticketRoutes);
+
 
 
 
