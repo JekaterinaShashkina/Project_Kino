@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const movieController = require('../controllers/movie.controller');
+const authMiddleware = require('../middleware/authMiddleware');
+const checkRole = require('../middleware/roleCheck');
 
-router.post('/movies',     /* #swagger.tags = ['Movie'] #swagger.description = "Post new movie" #swagger.parameters['body'] = {
+router.post('/movies', authMiddleware, checkRole(['Admin']),    /* #swagger.tags = ['Movie'] #swagger.description = "Post new movie" #swagger.parameters['body'] = {
     in: 'body',
     required: true,
     schema: {
@@ -20,7 +22,7 @@ router.get('/movies', /* #swagger.tags = ['Movie'] #swagger.description = "Get a
     movieController.getAllMovies);
 router.get('/movies/:id', /* #swagger.tags = ['Movie'] #swagger.description = "Get movie by ID"  */ 
     movieController.getMovieById);
-router.put('/movies/:id', /* #swagger.tags = ['Movie'] #swagger.description = "Update movie" #swagger.parameters['body'] = {
+router.put('/movies/:id', authMiddleware, checkRole(['Admin']),/* #swagger.tags = ['Movie'] #swagger.description = "Update movie" #swagger.parameters['body'] = {
     in: 'body',
     required: true,
     schema: {
@@ -34,7 +36,7 @@ router.put('/movies/:id', /* #swagger.tags = ['Movie'] #swagger.description = "U
 }
 }*/ 
     movieController.updateMovie);
-router.delete('/movies/:id', /* #swagger.tags = ['Movie'] #swagger.description = "Delete movie"  */
+router.delete('/movies/:id', authMiddleware, checkRole(['Admin']), /* #swagger.tags = ['Movie'] #swagger.description = "Delete movie"  */
     movieController.deleteMovie);
 
 module.exports = router;

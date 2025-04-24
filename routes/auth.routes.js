@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/auth.controller');
 
+
+const checkRole = require('../middleware/roleCheck');
+const authMiddleware = require('../middleware/authMiddleware');
+
 router.post('/register',     /* #swagger.tags = ['User'] #swagger.description = "User sign up" #swagger.parameters['body'] = {
     in: 'body',
     required: true,
@@ -21,7 +25,9 @@ router.post('/login',     /* #swagger.tags = ['User'] #swagger.description = "Us
 }*/  authController.login);
 router.post('/logout',     /* #swagger.tags = ['User'] #swagger.description = "User logout" }*/ authController.logout);
 
-router.post('/add-role',     /* #swagger.tags = ['User'] #swagger.description = "Add role for user" #swagger.parameters['body'] = {
+router.post('/add-role', authMiddleware, checkRole(['Manager']),
+    
+    /* #swagger.tags = ['User'] #swagger.description = "Add role for user" #swagger.parameters['body'] = {
     in: 'body',
     required: true,
     schema: {
@@ -29,7 +35,9 @@ router.post('/add-role',     /* #swagger.tags = ['User'] #swagger.description = 
     "roleid": "int",
     }
 }*/  authController.addRoleToUser);
-router.post('/remove-role', /* #swagger.tags = ['User'] #swagger.description = "Remove role from user" #swagger.parameters['body'] = {
+router.post('/remove-role', authMiddleware, checkRole(['Manager']),
+    
+    /* #swagger.tags = ['User'] #swagger.description = "Remove role from user" #swagger.parameters['body'] = {
     in: 'body',
     required: true,
     schema: {
@@ -38,7 +46,9 @@ router.post('/remove-role', /* #swagger.tags = ['User'] #swagger.description = "
     }
 }*/ authController.removeRoleFromUser);
 
-router.get('/users', /* #swagger.tags = ['User'] #swagger.description = "Get all users"  */ 
+
+
+router.get('/users', authMiddleware, checkRole(['Manager']),/* #swagger.tags = ['User'] #swagger.description = "Get all users"  */ 
     authController.getAllUsers
 )
 

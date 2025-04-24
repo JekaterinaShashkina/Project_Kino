@@ -2,13 +2,15 @@ const express = require('express')
 const router = express.Router() 
 
 const hallController = require("../controllers/hall.controller")
+const authMiddleware = require('../middleware/authMiddleware');
+const checkRole = require('../middleware/roleCheck');
 
 router.get('/halls',
     /* #swagger.tags = ['Hall'] #swagger.description = "Get all halls"  */ 
     hallController.getAllHalls
 )
 
-router.post('/halls',
+router.post('/halls', authMiddleware, checkRole(['Admin']),
     /* #swagger.tags = ['Hall'] #swagger.description = "Post new hall" #swagger.parameters['body'] = {
         in: 'body',
         required: true,

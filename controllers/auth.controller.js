@@ -58,7 +58,8 @@ exports.register = async (req, res) => {
       const isValid = await bcrypt.compare(password, user.password);
       if (!isValid) return res.status(401).json({ error: 'password is incorrect' });
   
-      const token = jwt.sign({ id: user.id, username: user.username }, SECRET, { expiresIn: '1h' });
+      const token = jwt.sign({ userid: user.userid, username: user.username }, SECRET, { expiresIn: '1h' });
+
   
       res.json({ message: 'success', token });
     } catch (error) {

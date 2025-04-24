@@ -420,40 +420,54 @@
             "required": true,
             "schema": {
               "type": "object",
+              "required": [
+                "title",
+                "duration",
+                "releasedate",
+                "rating",
+                "status",
+                "movielanguage"
+              ],
               "properties": {
                 "title": {
                   "type": "string",
-                  "example": "string"
+                  "example": "Inception",
+                  "description": "Movie title"
                 },
                 "duration": {
-                  "type": "string",
-                  "example": "int"
+                  "type": "integer",
+                  "example": 148,
+                  "description": "Duration of the movie in minutes"
                 },
                 "releasedate": {
                   "type": "string",
-                  "example": "date"
+                  "format": "date",
+                  "example": "2010-07-16",
+                  "description": "Release date in YYYY-MM-DD format"
                 },
                 "rating": {
-                  "type": "string",
-                  "example": "decimal"
+                  "type": "number",
+                  "format": "float",
+                  "example": 8.8,
+                  "description": "Rating of the movie from 0 to 10"
                 },
                 "status": {
                   "type": "string",
-                  "example": "string"
+                  "example": "Released",
+                  "description": "Status of the movie. Allowed: Released, Processes, Cancelled"
                 },
                 "movielanguage": {
                   "type": "string",
-                  "example": "string"
+                  "example": "English",
+                  "description": "Language of the movie"
                 },
                 "categoryids": {
                   "type": "array",
-                  "example": [
-                    1,
-                    2
-                  ],
                   "items": {
-                    "type": "number"
-                  }
+                    "type": "integer"
+                  },
+                  "example": [1, 2],
+                  "description": "Array of category IDs the movie belongs to"
                 }
               }
             }

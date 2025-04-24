@@ -34,6 +34,41 @@ exports.createMovie = async (req, res) => {
   try {
     const { title, duration, releasedate, rating, status, movielanguage, categoryids } = req.body;
 
+  
+    if (!title || duration === undefined || !releasedate || rating === undefined || !status || !movielanguage) {
+      await t.rollback();
+      return res.status(400).json({
+        error: 'All fields (title, duration, releasedate, rating, status, movielanguage) are required.'
+      });
+    }
+
+
+    if (!Number.isInteger(duration) || duration <= 0) {
+      await t.rollback();
+      return res.status(400).json({ error: 'Duration must be a positive integer.' });
+    }
+
+
+    const ratingValue = parseFloat(rating);
+    if (isNaN(ratingValue) || ratingValue < 0 || ratingValue > 10) {
+      await t.rollback();
+      return res.status(400).json({ error: 'Rating must be a number between 0 and 10.' });
+    }
+
+    if (isNaN(Date.parse(releasedate))) {
+      await t.rollback();
+      return res.status(400).json({ error: 'Releasedate must be a valid date.' });
+    }
+
+
+    const allowedStatuses = ['Released', 'Processes', 'Cancelled'];
+    if (!allowedStatuses.includes(status)) {
+      await t.rollback();
+      return res.status(400).json({
+        error: `Invalid status. Allowed values are: ${allowedStatuses.join(', ')}`
+      });
+    }
+
 
     if (categoryids && Array.isArray(categoryids)) {
       const existingCategories = await models.category.findAll({
@@ -46,16 +81,17 @@ exports.createMovie = async (req, res) => {
       if (missingIds.length > 0) {
         await t.rollback();
         return res.status(400).json({
-          error: `some categoryis is not presented: ${missingIds.join(', ')}`
+          error: `Some categories are not present: ${missingIds.join(', ')}`
         });
       }
     }
 
+
     const movie = await models.movie.create({
       title,
       duration,
-      releasedate,
-      rating,
+      releasedate: new Date(releasedate),
+      rating: ratingValue,
       status,
       movielanguage
     }, { transaction: t });
@@ -65,13 +101,14 @@ exports.createMovie = async (req, res) => {
     }
 
     await t.commit(); 
-    res.status(201).json({ message: 'movie is created', movie });
+    res.status(201).json({ message: 'Movie is created', movie });
   } catch (err) {
     await t.rollback(); 
     console.error(err);
-    res.status(500).json({ error: 'error' });
+    res.status(500).json({ error: 'Server error' });
   }
 };
+
 
 exports.updateMovie = async (req, res) => {
   const t = await db.transaction();
