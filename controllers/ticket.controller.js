@@ -4,7 +4,6 @@ const { Op } = require('sequelize');
 const models = initModels(db);
 
 exports.createTicket = async (req, res) => {
-
   const t = await db.transaction();
   try {
     const { sessionid, placeid, userid } = req.body;
@@ -20,11 +19,7 @@ exports.createTicket = async (req, res) => {
     if (!user) return res.status(400).json({ error: 'User not found' });
 
     const now = new Date();
-   
-    console.log('now time:', now);
-    console.log('seanss time:', new Date(session.starttime));
-
-    if (new Date(session.starttime) < now){
+    if (new Date(session.starttime) < now) {
       return res.status(400).json({ error: 'Cannot buy ticket for a past session' });
     }
 
@@ -34,6 +29,14 @@ exports.createTicket = async (req, res) => {
 
     if (existingTicket) {
       return res.status(400).json({ error: 'Ticket for this place and session already exists' });
+    }
+
+    const priceRecord = await models.price.findOne({
+      where: { sessionid, placeid }
+    });
+
+    if (!priceRecord || priceRecord.price <= 0) {
+      return res.status(400).json({ error: 'No valid price found for this session and place' });
     }
 
     const ticket = await models.ticket.create({
@@ -52,6 +55,7 @@ exports.createTicket = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 exports.getAllTickets = async (req, res) => {
   try {

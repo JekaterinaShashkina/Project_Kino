@@ -2,6 +2,8 @@ const db = require('../config/database');
 const initModels = require('../models/init-models');
 const models = initModels(db);
 
+const { Op } = require('sequelize');
+
 
 exports.getAllMovies = async (req, res) => {
   try {
@@ -174,4 +176,46 @@ exports.deleteMovie = async (req, res) => {
     res.status(500).json({ error: 'error' });
   }
 };
+
+exports.searchMovies = async (req, res) => {
+  try {
+    const { title, category, releasedateFrom, releasedateTo } = req.query;
+
+    const where = {};
+    const include = [];
+
+    if (title) {
+      where.title = { [Op.iLike]: `%${title}%` };
+    }
+    
+    if (releasedateFrom || releasedateTo) {
+      where.releasedate = {};
+      if (releasedateFrom) {
+        where.releasedate[Op.gte] = releasedateFrom;
+      }
+      if (releasedateTo) {
+        where.releasedate[Op.lte] = releasedateTo;
+      }
+    }
+    
+    if (category) {
+      include.push({
+        model: models.category,
+        where: { catname: { [Op.iLike]: `%${category}%` } },
+        through: { attributes: [] }
+      });
+    }
+
+    const movies = await models.movie.findAll({
+      where,
+      include
+    });
+
+    res.json(movies);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error while searching movies' });
+  }
+};
+
 

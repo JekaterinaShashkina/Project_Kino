@@ -14,6 +14,9 @@ const placeRoutes = require('./routes/place.routes');
 const priceRoutes = require('./routes/price.routes');
 
 const ticketRoutes = require('./routes/ticket.routes');
+const reportRoutes = require('./routes/report.routes');
+
+
 
 
 
@@ -28,6 +31,7 @@ app.use('/', sessionRoutes);
 app.use('/', placeRoutes);
 app.use('/', priceRoutes);
 app.use('/',ticketRoutes);
+app.use('/', reportRoutes);
 
 
 

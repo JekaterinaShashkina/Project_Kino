@@ -8,6 +8,6 @@ router.get('/prices', /* #swagger.tags = ['Price'] #swagger.description = "Get a
 router.get('/prices/:id', /* #swagger.tags = ['Price'] #swagger.description = "Get price by ID"  */ priceController.getPriceById);
 router.post('/prices', authMiddleware, checkRole(['Admin']), /* #swagger.tags = ['Price'] #swagger.description = "Create new price"  */ priceController.createPrice);
 router.put('/prices/:id', authMiddleware, checkRole(['Admin']), /* #swagger.tags = ['Price'] #swagger.description = "Update price"  */ priceController.updatePrice);
-router.delete('/prices/:id', authMiddleware, checkRole(['Admin']), /* #swagger.tags = ['Price'] #swagger.description = "Delete price"  */ priceController.deletePrice);
+//router.delete('/prices/:id', authMiddleware, checkRole(['Admin']), /* #swagger.tags = ['Price'] #swagger.description = "Delete price"  */ priceController.deletePrice);
 
 module.exports = router;

@@ -39,6 +39,10 @@
     {
       "name": "Ticket",
       "description": "Ticket endpoints"
+    },
+    {
+      "name": "Reports",
+      "description": "Reports for manager"
     }
   ],
   "schemes": [
@@ -597,33 +601,63 @@
             "description": "Internal Server Error"
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "Movie"
-        ],
-        "description": "Delete movie",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
       }
+      
     },
+    "/movies/search": {
+  "get": {
+    "tags": ["Movie"],
+    "summary": "Search movies",
+    "description": "Search movies by title, genre (category), and release date range",
+    "parameters": [
+      {
+        "name": "title",
+        "in": "query",
+        "description": "Part of movie title to search for",
+        "required": false,
+        "type": "string",
+        "example": "Wind"
+      },
+      {
+        "name": "category",
+        "in": "query",
+        "description": "Genre name to search for",
+        "required": false,
+        "type": "string",
+        "example": "Romance"
+      },
+      {
+        "name": "releasedateFrom",
+        "in": "query",
+        "description": "Release date from (YYYY-MM-DD)",
+        "required": false,
+        "type": "string",
+        "format": "date",
+        "example": "1940-01-01"
+      },
+      {
+        "name": "releasedateTo",
+        "in": "query",
+        "description": "Release date to (YYYY-MM-DD)",
+        "required": false,
+        "type": "string",
+        "format": "date",
+        "example": "1950-12-31"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "List of found movies"
+      },
+      "400": {
+        "description": "Bad request"
+      },
+      "500": {
+        "description": "Internal server error"
+      }
+    }
+  }
+},
     "/places": {
       "post": {
         "tags": [
@@ -748,32 +782,8 @@
             "description": "Internal Server Error"
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "Place"
-        ],
-        "description": "Delete place",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
       }
+
     },
     "/prices": {
       "get": {
@@ -899,32 +909,8 @@
             "description": "Internal Server Error"
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "Price"
-        ],
-        "description": "Delete price",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
       }
+      
     },
     "/sessions": {
       "get": {
@@ -1163,8 +1149,85 @@
           }
         }
       }
+    },
+
+"/status/{sessionid}": {
+  "get": {
+    "tags": ["Place"],
+    "summary": "Get places with status by session",
+    "parameters": [
+      {
+        "name": "sessionid",
+        "in": "path",
+        "required": true,
+        "type": "integer"
+      }
+    ],
+    "responses": {
+      "200": { "description": "Places with status returned" },
+      "400": { "description": "Invalid session ID" },
+      "404": { "description": "No places found" },
+      "500": { "description": "Internal server error" }
     }
+  }
+},
+"/reports/sales": {
+  "get": {
+    "tags": ["Reports"],
+    "summary": "Sold tickets and income by period",
+    "description": "Returns list of sold tickets with total income between given dates (inclusive)",
+    "parameters": [
+      {
+        "name": "from",
+        "in": "query",
+        "required": true,
+        "type": "string",
+        "format": "date",
+        "description": "Start date (YYYY-MM-DD)"
+      },
+      {
+        "name": "to",
+        "in": "query",
+        "required": true,
+        "type": "string",
+        "format": "date",
+        "description": "End date (YYYY-MM-DD)"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Sales data returned successfully"
+      },
+      "400": {
+        "description": "Invalid or missing date range"
+      },
+      "401": {
+        "description": "Unauthorized"
+      },
+      "403": {
+        "description": "Access denied"
+      },
+      "500": {
+        "description": "Internal server error"
+      }
+    },
+    "security": [
+      {
+        "Bearer": []
+      }
+    ]
+  }
+}
+
+
+
+
   },
+
+
+
+
+
   "security": [
     {
       "Bearer": []
