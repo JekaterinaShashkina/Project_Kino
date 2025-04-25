@@ -42,10 +42,7 @@
 #### **Juhtkond:**
 - Aruanded ja statistika:
   - Piletimüügi analüüs.
-  - Saalide täituvuse analüüs.
-  - Filmide populaarsus.
-- Piletihindade haldamine:
-  - Hindade määramine ja muutmine seansipõhiselt.
+
 
 #### **Kasutaja:**
 - Kinokava ja filmide sirvimine:
@@ -54,7 +51,7 @@
   - Detailne filmiinfo (kirjeldus, kestus, žanr, treiler jne).
 - Piletite ostmine:
   - Kohtade valimine saalis.
-  - Ostu vormistamine ja ajutine broneerimine.
+  - Ostu vormistamine.
 - Piletite tagastamine.
 
 #### **Autentimine ja autoriseerimine:**
@@ -63,19 +60,7 @@
 - Ligipääsutasemete eristamine:
   - Tavakasutajad: filmide vaatamine, piletite ost.
   - Administraatorid: sisu haldamine.
-  - Juhtkond: juurdepääs statistikale ja hindadele.
-
-#### **Reaktiivne UI:**
-- Dünaamiline kasutajaliides ilma lehe uuesti laadimiseta.
-- Saalide kohtade oleku haldamine:
-  - Kohad: vabad, broneeritud, ostetud.
-  - Koha valimine teeb selle ajutiselt blokeerituks.
-  - Kui makse ei lõpetata õigeaegselt, muutub koht jälle saadavaks.
-
-#### **Vigade käsitlemine ja vormide valideerimine:**
-- Kohustuslikud väljad (nt filmi pealkiri, kestus, email jne).
-- Andmeformaadi kontroll (email, parool jne).
-- Veateated (nt koht juba ostetud).
+  - Juhtkond: juurdepääs statistikale ja rollidele.
 
 ---
 
@@ -95,59 +80,7 @@
 > Projekti eesmärk on luua töökindel ja kasutajasõbralik kinoportaal, mis toetab mitmekülgset haldust ja pakub intuitiivset kasutajakogemust.
 
 
-# Kinoportaal
-
-## Ülevaade
-
-Kinoportaal on kaasaegne lahendus kino juhtimiseks, mis lihtsustab administraatorite ja juhtkonna tööd ning pakub kasutajatele mugavat vahendit filmide otsimiseks, piletite ostmiseks ja info saamiseks.
-
-## Eesmärk
-
-Arendada infosüsteem kino juhtimiseks, mis automatiseerib filmide, seansside, saalide ja piletite haldamise protsesse. Kasutajatele pakutakse võimalust leida infot filmide kohta, osta ja tagastada pileteid.
-
-## Teenuste loetelu
-
-### Administraator
-- Filmide, seansside, saalide, kategooriate haldamine
-- Info lisamine, muutmine, kustutamine
-- Filmide filtreerimine ja otsing (pealkiri, žanr, kuupäev)
-- Vormide valideerimine (nt ei saa määrata minevikukuupäeva tulevase seansi jaoks)
-
-### Juhtkond
-- Aruanded ja statistika:
-  - Piletimüügi analüüs
-  - Saalide täituvuse analüüs
-  - Filmide populaarsus
-- Hindade haldamine:
-  - Hindade lisamine ja muutmine seansi ja saali alusel
-
-### Kasutaja
-- Filmide ja seansside vaatamine
-- Piletite ostmine ja tagastamine
-- Seansi kohavalik ja ajutine broneering
-
-### Autentimine ja autoriseerimine
-- Registreerimine, sisselogimine, väljalogimine
-- Ligipääsuõiguste eristamine:
-  - kasutaja
-  - administraator
-  - juhtkond
-
-### Reaktiivne UI
-- Kohtade oleku haldus: vaba, broneeritud, ostetud
-- Ajutine blokeering kohtadele
-- Aja lõppemisel vabaneb koht automaatselt
-
-## Kasutatud tehnoloogiad
-
-- **Backend**: Node.js + Express
-- **ORM ja andmebaas**: Sequelize + PostgreSQL
-- **Frontend**: React
-- **State Management**: Redux
-- **API**: REST
-- **Autentimine**: JWT
-
-## Paigaldus ja käivitamine
+## Swagger
 
 Dokumentatsioon: `http://localhost:3001/doc`
 
@@ -182,9 +115,7 @@ Dokumentatsioon: `http://localhost:3001/doc`
 
 ### Raportid
 - Piletimüük seansside kaupa (kogus, tulu)
-- Tulu ajavahemikus
-- Saalide täituvus
-- Piletite tagastuste arv
+
 - Vaated PostgreSQL-is: `view_sales_summary`, `view_places_with_status`
 ## Filtrid ja otsing
 
