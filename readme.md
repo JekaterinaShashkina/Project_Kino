@@ -186,6 +186,22 @@ Dokumentatsioon: `http://localhost:3001/doc`
 - Saalide täituvus
 - Piletite tagastuste arv
 - Vaated PostgreSQL-is: `view_sales_summary`, `view_places_with_status`
+## Filtrid ja otsing
+
+###  Filmide otsing ja filtreerimine
+- **Pealkiri (title)**: osaline vaste
+Wind
+
+- **Žanr (category)**: 
+Romance
+- **Linastumise kuupäevade vahemik**:
+    releasedateFrom=1940-01-01
+
+    releasedateTo=1960-01-01
+
+###  Seansside vaatamine 
+
+/status/:sessionid — seansi kohtade olek (vaba, aktiivne, tagastatud)
 
 
 ## Проект Kinoportaal — Важные настройки и заметки
@@ -287,5 +303,12 @@ GROUP BY s.sessionid, s.starttime, m.title;
 ```
 
 ---
+
+
+
+
+
+
+
 
 
