@@ -97,3 +97,37 @@ exports.getSessionsByMovie = async (req, res) => {
         res.status(500).json({error: 'Error fetching sessions by movie'})
     }
 }
+
+exports.updateSession = async (req, res) => {
+    const { id } = req.params    
+    const { starttime, hallid, movieid } = req.body    
+    try {     
+        const session = await models.session.findByPk(id)      
+        if (!session) {       
+            return res.status(404).json({ message: 'Session not found' })      
+        }     
+        if (hallid !== undefined) {
+            const hall = await models.hall.findByPk(hallid);
+            if (!hall) {
+              return res.status(400).json({ error: 'Hall not found' });
+            }
+            session.hallid = hallid;
+          }
+        if (movieid !== undefined) {
+        const movie = await models.movie.findByPk(movieid);
+        if (!movie) {
+            return res.status(400).json({ error: 'Movie not found' });
+        }
+        session.movieid = movieid;
+        }  
+        if (starttime !== undefined) {
+            session.starttime = starttime; // строкой в формате 'YYYY-MM-DD HH:mm:ss'
+        }
+        await session.save()      
+        
+        res.status(200).json({ message: 'Session updated', session })    
+    } catch (error) {     
+        console.error(error)      
+        res.status(500).json({ error: 'An error occurred while updating session' })    
+    } 
+}

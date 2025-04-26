@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/auth.controller');
-
-
+const validator = require('../config/validationBody')
 const checkRole = require('../middleware/roleCheck');
 const authMiddleware = require('../middleware/authMiddleware');
 
@@ -14,7 +13,7 @@ router.post('/register',     /* #swagger.tags = ['User'] #swagger.description = 
     password: 'password',
     useremail: 'email',
     }
-}*/  authController.register);
+}*/validator.createUserValidator,  authController.register);
 router.post('/login',     /* #swagger.tags = ['User'] #swagger.description = "User sign in" #swagger.parameters['body'] = {
     in: 'body',
     required: true,
@@ -22,7 +21,7 @@ router.post('/login',     /* #swagger.tags = ['User'] #swagger.description = "Us
     username: 'string',
     password: 'password',
     }
-}*/  authController.login);
+}*/validator.loginValidator,  authController.login);
 router.post('/logout',     /* #swagger.tags = ['User'] #swagger.description = "User logout" }*/ authController.logout);
 
 router.post('/add-role', authMiddleware, checkRole(['Manager']),
@@ -45,8 +44,6 @@ router.post('/remove-role', authMiddleware, checkRole(['Manager']),
     "roleid": "int",
     }
 }*/ authController.removeRoleFromUser);
-
-
 
 router.get('/users', authMiddleware, checkRole(['Manager']),/* #swagger.tags = ['User'] #swagger.description = "Get all users"  */ 
     authController.getAllUsers

@@ -119,6 +119,13 @@ exports.updateMovie = async (req, res) => {
     if (!movie) return res.status(404).json({ error: 'movie is not found' });
 
     const { title, duration, releasedate, rating, status, movielanguage, categoryids } = req.body;
+    
+    if (!title || duration === undefined || !releasedate || rating === undefined || !status || !movielanguage) {
+      await t.rollback();
+      return res.status(400).json({
+        error: 'All fields (title, duration, releasedate, rating, status, movielanguage) are required.'
+      });
+    }
 
     let foundCategories = [];
     if (categoryids && Array.isArray(categoryids)) {

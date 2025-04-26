@@ -23,6 +23,10 @@ router.post('/categories',authMiddleware, checkRole(['Admin']),
 
 // GET category by ID 
 router.get('/categories/:id', /* #swagger.tags = ['Categories'] #swagger.description = "Get category by ID"  */ 
-    categoryController.getCategoryById) 
+    categoryController.getCategoryById)
+    
+router.put('/categories/:id', authMiddleware, checkRole(['Admin']), /* #swagger.tags = ['Categories'] #swagger.description = "Update category"  */ 
+    categoryController.updateCategory)
 
 module.exports = router
+

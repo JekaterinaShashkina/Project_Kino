@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const { validationResult } = require('express-validator');
 const db = require("../config/database"); 
 const initModels = require("../models/init-models");
 const models = initModels(db); 
@@ -13,6 +13,11 @@ const Role = models.role;
 const UserRole = models.userrole;
 
 exports.register = async (req, res) => {
+    // Validation
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
   try {
     const { username, password, useremail } = req.body;
 
@@ -49,6 +54,10 @@ exports.register = async (req, res) => {
 
   
   exports.login = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
     try {
       const { username, password } = req.body;
   

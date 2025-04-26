@@ -16,4 +16,8 @@ router.get('/sessions/date/:date', /* #swagger.tags = ['Session'] #swagger.descr
 router.get('/sessions/movie/:movieid', /* #swagger.tags = ['Session'] #swagger.description = "Get sessions by movie"  */ 
     sessionController.getSessionsByMovie)
 
+router.put('/sessions/:id', authMiddleware, checkRole(['Admin']), /* #swagger.tags = ['Session'] #swagger.description = "Update session"  */
+    sessionController.updateSession
+)
+
 module.exports = router;
