@@ -111,3 +111,21 @@ exports.getPlacesWithStatus = async (req, res) => {
   }
 };
 
+// search place for hall
+exports.getPlacesByHallID = async (req, res) => {
+  try {
+    const {hallid} = req.params
+    const hall = await models.hall.findByPk(hallid);
+    if (!hall) {
+      return res.status(404).json({ error: 'Hall not found' });
+    }
+    const places = await models.place.findAll({
+      where: { hallid }
+    });
+
+    res.json(places);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error fetching places by hall' });
+  }
+}

@@ -19,5 +19,7 @@ router.get('/status/:sessionid',
     placeController.getPlacesWithStatus
   );
 
-
+router.get('/places/hall/:hallid', /* #swagger.tags = ['Place'] #swagger.description = "Search places by ID"  */
+  placeController.getPlacesByHallID
+)
 module.exports = router;
