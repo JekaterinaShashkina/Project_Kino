@@ -877,7 +877,7 @@
         "tags": [
           "Place"
         ],
-        "description": "Search places by ID",
+        "description": "Search places by hallID",
         "parameters": [
           {
             "name": "hallid",

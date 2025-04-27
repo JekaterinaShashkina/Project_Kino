@@ -44,8 +44,8 @@ exports.createMovie = async (req, res) => {
       });
     }
 
-
-    if (!Number.isInteger(duration) || duration <= 0) {
+    const durationValue = parseInt(duration, 10);
+    if (!Number.isInteger(durationValue) || durationValue <= 0) {
       await t.rollback();
       return res.status(400).json({ error: 'Duration must be a positive integer.' });
     }
@@ -91,7 +91,7 @@ exports.createMovie = async (req, res) => {
 
     const movie = await models.movie.create({
       title,
-      duration,
+      duration: durationValue,
       releasedate: new Date(releasedate),
       rating: ratingValue,
       status,
@@ -119,7 +119,7 @@ exports.updateMovie = async (req, res) => {
     if (!movie) return res.status(404).json({ error: 'movie is not found' });
 
     const { title, duration, releasedate, rating, status, movielanguage, categoryids } = req.body;
-    
+
     if (!title || duration === undefined || !releasedate || rating === undefined || !status || !movielanguage) {
       await t.rollback();
       return res.status(400).json({

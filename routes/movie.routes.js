@@ -21,7 +21,8 @@ router.post('/movies', authMiddleware, checkRole(['Admin']),    /* #swagger.tags
 router.get('/movies', /* #swagger.tags = ['Movie'] #swagger.description = "Get all movies"  */ 
     movieController.getAllMovies);
 
-router.get('/movies/search',  /* #swagger.tags = ['Movie'] #swagger.description = "Get movie by title, category or reliase"  */  movieController.searchMovies);
+router.get('/movies/search',  /* #swagger.tags = ['Movie'] #swagger.description = "Get movie by title, category or reliase"  */  
+    movieController.searchMovies);
 
 
 router.get('/movies/:id', /* #swagger.tags = ['Movie'] #swagger.description = "Get movie by ID"  */ 
