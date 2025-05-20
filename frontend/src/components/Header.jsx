@@ -1,23 +1,23 @@
-import {AppBar, Button, Typography} from '@mui/material'
+import {AppBar, Box, Button, Typography} from '@mui/material'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
     const { user, logout } = useAuth();
-    console.log('user in header:', user);
+
     return (
-        <AppBar>
+        <AppBar sx={{ backgroundColor: '#FF00FF' }}>
         { user ? (
-            <>
-            <Typography component="span" mr={2}>
+            <Box sx={{display: 'flex', alignItems: 'center', justifyContent:'flex-end', gap: '20px', mr: '40px'}}>
+            <Typography component="span" mr={2} color='#4B0082'>
                 User: {user.username}
             </Typography>
-            <Button color="inherit" onClick={logout}>
+            <Button sx={{color:'#4B0082'}} onClick={logout}>
                 Logout
             </Button>
-            </>
+            </Box>
         ) : (
-            <Button color="inherit" component={Link} to="/auth">
+            <Button color="#4B0082" component={Link} to="/auth">
                 SignIn
             </Button>
         )

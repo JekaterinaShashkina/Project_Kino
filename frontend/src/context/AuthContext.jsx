@@ -26,7 +26,6 @@ export const AuthProvider = ({children}) => {
         console.log('userData:', userData);
         const fullUser = {
             ...userData,
-            role: userData.role?.name  
         };
         const now = new Date().getTime();
         const expiryTime = now + 24 * 60 * 60 * 1000;

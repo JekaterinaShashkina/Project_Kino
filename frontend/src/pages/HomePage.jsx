@@ -9,7 +9,7 @@ function HomePage() {
             <Box>
                 <Header/>
             </Box>
-            <Box>            
+            <Box sx={{pt: '180px'}}>            
                 <SideBar/>
                 <MainContent/>
             </Box>

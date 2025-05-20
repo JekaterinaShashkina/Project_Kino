@@ -4,6 +4,7 @@ import axios from 'axios'
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Box, Paper, Typography, Button, TextField } from "@mui/material";
+import PasswordInput from "./PasswordInput";
 
 const SignIn = () => {
     const [username, setUsername] = useState('')
@@ -44,7 +45,7 @@ const SignIn = () => {
             margin="normal"
             required
             />
-            <TextField
+            <PasswordInput
             fullWidth
             label="Password"
             type="password"
