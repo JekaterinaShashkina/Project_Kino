@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import {fetchAllFilms} from '../services/filmService'
+import {fetchAllFilms, fetchPoster} from '../services/filmService'
 import { Box, Grid, Typography } from "@mui/material";
-
+import FilmSlider from "./FilmSlider";
+ 
 
 const FilmListSection = () => {
     const [films, setFilms] = useState()
@@ -14,7 +15,14 @@ const FilmListSection = () => {
         const loadFilms = async () => {
             try {
                 const data = await fetchAllFilms()
-                setFilms(data)
+                      // Подгружаем постеры
+                const updated = await Promise.all(
+                    data.map(async (film) => {
+                    const imageUrl = await fetchPoster(film.title);
+                    return { ...film, imageUrl };
+                    })
+                );
+                setFilms(updated)
             } catch (error) {
                 console.error('Error fetching films', error)
             } finally {
@@ -30,18 +38,10 @@ const FilmListSection = () => {
     }
     return (
         <Box>
-            <Typography variant="h5" gutterBottom sx={{mt: '16px', mb: '32px'}}>
+            <Typography variant="h5" gutterBottom sx={{mt: '32px', mb: '32px', color: '#FF00FF', fontSize: '28px'}}>
                 Top Films
             </Typography>
-            {
-                films.map((film) => (
-                <Grid item key={film.movieid} xs={12} sm={6} md={4} lg={3}>
-                    <Typography>{film.title}</Typography>
-                </Grid>
-                ))
-            }
-
-
+            <FilmSlider films={films}/>
         </Box>
     )
 }
