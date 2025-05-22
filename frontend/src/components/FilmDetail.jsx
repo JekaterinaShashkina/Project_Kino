@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Box, Typography } from "@mui/material"
 import { fetchFilmById, fetchPoster, fetchFilmExtraDetails} from "../services/filmService";
 // import { useAuth } from "../context/AuthContext";

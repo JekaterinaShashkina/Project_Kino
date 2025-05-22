@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import {fetchAllFilms, fetchPoster} from '../services/filmService'
+import {fetchAllFilms} from '../services/filmService'
 import { Box, Grid, Typography } from "@mui/material";
 import FilmSlider from "./FilmSlider";
- 
+import { enhanceWithPosters } from "../utils/enhanceWithPosters";
 
 const FilmListSection = () => {
     const [films, setFilms] = useState()
@@ -16,12 +16,7 @@ const FilmListSection = () => {
             try {
                 const data = await fetchAllFilms()
                       // Подгружаем постеры
-                const updated = await Promise.all(
-                    data.map(async (film) => {
-                    const imageUrl = await fetchPoster(film.title);
-                    return { ...film, imageUrl };
-                    })
-                );
+                const updated = await enhanceWithPosters(data)
                 setFilms(updated)
             } catch (error) {
                 console.error('Error fetching films', error)

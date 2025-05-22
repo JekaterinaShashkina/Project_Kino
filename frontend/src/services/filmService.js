@@ -60,3 +60,17 @@ export const fetchFilmExtraDetails = async (title) => {
     return null;
   }
 };
+
+export const searchFilms = async ({title, category, releasedateFrom, releasedateTo}) => {
+  const response = await axios.get(`${API_URL}/movies/search`, {
+    params: {
+      title,
+      category,
+      releasedateFrom,
+      releasedateTo
+    },
+  });
+  console.log(response.data);
+  
+  return response.data;
+};

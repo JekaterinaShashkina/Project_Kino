@@ -57,7 +57,9 @@ const FilmCard = ({ film }) => {
         alignItems: 'center',
         textAlign: 'center', mb: '8px'}}>{film.title}</Typography>
       <Typography variant="body2" color="#DA70D6" mb='5px'>
-        {film.categories.map((c) => c.catname).join(', ')}
+        {Array.isArray(film.categories) && film.categories.length > 0
+        ? film.categories.map((c) => c.catname).join(', ')
+        : 'No categories'}     
       </Typography>
       <Typography variant="body2" color="warning.main">
         ⭐ {film.rating}

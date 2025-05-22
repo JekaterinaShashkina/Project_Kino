@@ -41,7 +41,7 @@ const SignUp = () => {
         alignItems="center"
         minHeight="80vh"
       >
-        <Paper elevation={3} sx={{ padding: 4, width: 350 }}>
+        <Paper elevation={3} sx={{ padding: 4, width: 350, backgroundColor: '#FFF0F5', color: '#8B008B' }}>
           <Typography variant="h5" mb={2}>
             Sign Up
           </Typography>
@@ -81,7 +81,7 @@ const SignUp = () => {
             margin="normal"
             required
           />
-          <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, backgroundColor:'#2c3755' }}>
+          <Button type="submit" variant="contained" fullWidth sx={{ mt: 2, backgroundColor:'#8B008B' }}>
             Register
           </Button>
         </form>
