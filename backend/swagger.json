@@ -1223,6 +1223,87 @@
         }
       }
     },
+
+
+"/session/{id}/full": {
+  "get": {
+    "tags": [
+      "Session"
+    ],
+    "description": "Get session details with hall, seat status, and ticket prices",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "type": "string",
+        "description": "Session ID"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Successful response with session, hall, seat info, and prices",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "session": {
+              "type": "object",
+              "properties": {
+                "sessionid": { "type": "integer" },
+                "starttime": { "type": "string", "format": "date-time" },
+                "hall": {
+                  "type": "object",
+                  "properties": {
+                    "hallid": { "type": "integer" },
+                    "hallname": { "type": "string" }
+                  }
+                },
+                "movie": {
+                  "type": "object",
+                  "properties": {
+                    "movieid": { "type": "integer" },
+                    "title": { "type": "string" },
+                    "duration": { "type": "integer" },
+                    "releasedate": { "type": "string" },
+                    "rating": { "type": "string" },
+                    "status": { "type": "string" },
+                    "movielanguage": { "type": "string" },
+                    "categorynames": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            },
+            "seats": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "placeid": { "type": "integer" },
+                  "rownumber": { "type": "integer" },
+                  "seatnumber": { "type": "integer" },
+                  "isBooked": { "type": "boolean" },
+                  "price": { "type": "number", "format": "float" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Session not found"
+      },
+      "500": {
+        "description": "Internal Server Error"
+      }
+    }
+  }
+},
+
+
+    
     "/tickets": {
       "post": {
         "tags": [

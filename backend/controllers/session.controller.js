@@ -98,6 +98,90 @@ exports.getSessionsByMovie = async (req, res) => {
     }
 }
 
+exports.getSessionById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const session = await models.session.findByPk(id, {
+            include: [
+                { model: models.hall, as: 'hall' },
+                { model: models.movie, as: 'movie' }
+            ]
+        });
+        if (!session) {
+            return res.status(404).json({ error: 'Session not found' });
+        }
+        res.json(session);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error fetching session by ID' });
+    }
+};
+
+exports.getSessionWithSeats = async (req, res) => {
+    const { id } = req.params;
+    try {
+        // Получаем сессию с залом и фильмом
+        const session = await models.session.findOne({
+            where: { sessionid: id },
+            include: [
+                { model: models.hall, as: 'hall' },
+                { model: models.movie, as: 'movie' }
+            ]
+        });
+
+        if (!session) {
+            return res.status(404).json({ error: 'Session not found' });
+        }
+
+        // Получаем места в этом зале
+        const seats = await models.place.findAll({
+            where: { hallid: session.hallid },
+            attributes: ['placeid', 'rownumber', 'seatnumber']
+        });
+
+        // Получаем забронированные места для этой сессии
+        const bookedSeats = await models.ticket.findAll({
+            where: { sessionid: id },
+            attributes: ['placeid']
+        });
+
+        const bookedSeatIds = bookedSeats.map(t => t.placeid);
+
+        // Получаем цены для данной сессии
+        const prices = await models.price.findAll({
+            where: { sessionid: id },
+            attributes: ['placeid', 'price']
+        });
+
+        const priceMap = {};
+        prices.forEach(p => {
+            priceMap[p.placeid] = p.price;
+        });
+
+        // Составляем список мест с их статусом и ценой
+        const seatsWithStatus = seats.map(seat => ({
+            placeid: seat.placeid,
+            rownumber: seat.rownumber,
+            seatnumber: seat.seatnumber,
+            isBooked: bookedSeatIds.includes(seat.placeid),
+            price: priceMap[seat.placeid] || null  // цена, если есть
+        }));
+
+        // Отправляем всё в ответе
+        res.json({
+            session,
+            seats: seatsWithStatus
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error fetching session with seats and prices' });
+    }
+};
+
+
+
+
 exports.updateSession = async (req, res) => {
     const { id } = req.params    
     const { starttime, hallid, movieid } = req.body    

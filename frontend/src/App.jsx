@@ -7,6 +7,7 @@ import { SearchResults } from './components/SearchResults';
 import ShowTimePage from './pages/ShowTimePage';
 import './App.css'
 import FilmDetailPage from './pages/FilmDetailPage';
+import SessionDetailsPage from './pages/SessionDetailsPage'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
       <Route path='/films/:id' element={<FilmDetailPage/>}/>
       <Route path="/search-results" element={<SearchResults />} />
       <Route path='/showtime' element={<ShowTimePage/>}/>
+      <Route path="/session/:id" element={<SessionDetailsPage />} />
     </Routes>
   )
 }

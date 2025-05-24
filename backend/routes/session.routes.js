@@ -20,4 +20,7 @@ router.put('/sessions/:id', authMiddleware, checkRole(['Admin']), /* #swagger.ta
     sessionController.updateSession
 )
 
+router.get('/session/:id/full', sessionController.getSessionWithSeats);
+
+
 module.exports = router;

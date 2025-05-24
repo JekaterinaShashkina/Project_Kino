@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { Box, Paper, Typography, Button, TextField } from "@mui/material";
 import PasswordInput from "./PasswordInput";
 
+
 const SignIn = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -21,7 +22,7 @@ const SignIn = () => {
                 password,
             });
             const token = response.data.token
-            localStorage.setItem('token', `Bearer ${token}`)
+            localStorage.setItem('token', token)
             login(response.data.user)
             setMessage('Login is successful')
             navigate('/');
