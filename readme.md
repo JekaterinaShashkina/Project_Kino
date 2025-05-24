@@ -61,7 +61,7 @@
   - Tavakasutajad: filmide vaatamine, piletite ost.
   - Administraatorid: sisu haldamine.
   - Juhtkond: juurdepääs statistikale ja rollidele.
-
+Авторитизация в swagger Baerer + space + token
 ---
 
 ### 1.3 Tehnoloogia valik
@@ -80,9 +80,9 @@
 > Projekti eesmärk on luua töökindel ja kasutajasõbralik kinoportaal, mis toetab mitmekülgset haldust ja pakub intuitiivset kasutajakogemust.
 
 
-## Swagger
+## Paigaldamine ja Swagger 
 
-Dokumentatsioon: `http://localhost:3001/doc`
+Dokumentatsioon: `http://localhost:3001/api`
 
 ## Kontrollid ja valideerimine
 
@@ -135,9 +135,15 @@ Romance
 /status/:sessionid — seansi kohtade olek (vaba, aktiivne, tagastatud)
 
 
-## Проект Kinoportaal — Важные настройки и заметки
+## Backend
+```
+cd Project_Kino\
+npx nodemon index.js
+```
 
-### Примеры автотизации пользователей
+swagger http://localhost:3001/api
+
+### autoriseerimise naidised
 ```json
 {
   "username": "user",
@@ -159,7 +165,7 @@ Romance
 }
 ```
 
-Авторитизация в swagger Baerer + space + token
+Autorizeerimine swaggeris Baerer + space + token
 
 ### Управление ролями
 Роли назначает пользователь с ролью manager, по умолчанию добавляется пользователю роль user
