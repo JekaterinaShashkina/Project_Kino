@@ -61,16 +61,38 @@ exports.register = async (req, res) => {
     try {
       const { username, password } = req.body;
   
-      const user = await User.findOne({ where: { username } });
+      const user = await User.findOne({ where: { username }, 
+      include: 
+        [
+          {
+            model: UserRole,
+            as: 'userroles',
+            include: [
+              {
+                model: Role,
+                as: 'role',
+                attributes: ['rolename']
+              }
+            ]
+          }
+        ]
+      });
       if (!user) return res.status(404).json({ error: 'user is not found' });
   
       const isValid = await bcrypt.compare(password, user.password);
       if (!isValid) return res.status(401).json({ error: 'password is incorrect' });
   
       const token = jwt.sign({ userid: user.userid, username: user.username }, SECRET, { expiresIn: '1h' });
-
   
-      res.json({ message: 'success', token });
+      res.json({ 
+        message: 'success', 
+        token,   
+        user: {
+          username: user.username,
+          email: user.useremail, // если нужно
+          id: user.id, // если нужно
+          roles: user.userroles.map(ur => ur.role?.get('rolename'))
+        } });
     } catch (error) {
       console.error('Error:', error);
       res.status(500).json({ error: 'error' });

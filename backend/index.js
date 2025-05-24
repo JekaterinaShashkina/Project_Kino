@@ -1,6 +1,11 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
+
 const app = express();
+app.use(cors({
+  origin: 'http://localhost:5173', 
+}));
 
 console.log("JWT_SECRET:", process.env.JWT_SECRET); 
 require('./swagger')(app); 
@@ -16,11 +21,6 @@ const priceRoutes = require('./routes/price.routes');
 const ticketRoutes = require('./routes/ticket.routes');
 const reportRoutes = require('./routes/report.routes');
 
-
-
-
-
-
 app.use(express.json()); 
 app.use('/', authRoutes);
 app.use('/', catRoutes);
@@ -32,9 +32,6 @@ app.use('/', placeRoutes);
 app.use('/', priceRoutes);
 app.use('/',ticketRoutes);
 app.use('/', reportRoutes);
-
-
-
 
 app.listen(3001, () => {
   console.log('port 3001');

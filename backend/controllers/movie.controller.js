@@ -189,7 +189,11 @@ exports.searchMovies = async (req, res) => {
     const { title, category, releasedateFrom, releasedateTo } = req.query;
 
     const where = {};
-    const include = [];
+    const include = [{
+      model: models.category,
+      attributes: ['categoryid', 'catname'],
+      through: { attributes: [] },
+    }];
 
     if (title) {
       where.title = { [Op.iLike]: `%${title}%` };
@@ -206,11 +210,9 @@ exports.searchMovies = async (req, res) => {
     }
     
     if (category) {
-      include.push({
-        model: models.category,
-        where: { catname: { [Op.iLike]: `%${category}%` } },
-        through: { attributes: [] }
-      });
+      include[0].where = {
+        catname: { [Op.iLike]: `%${category}%` }
+      };
     }
 
     const movies = await models.movie.findAll({

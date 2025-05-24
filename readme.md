@@ -144,12 +144,6 @@ npx nodemon index.js
 swagger http://localhost:3001/api
 
 ### autoriseerimise naidised
-```json
-{
-  "username": "user",
-  "password": "123"
-}
-```
 
 ```json
 {
