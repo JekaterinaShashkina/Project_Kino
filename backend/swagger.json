@@ -1190,56 +1190,73 @@
       }
     },
     "/sessions/{id}": {
-      "put": {
-        "tags": [
-          "Session"
-        ],
-        "description": "Update session",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "starttime": {
-                  "example": "any"
-                },
-                "hallid": {
-                  "example": "any"
-                },
-                "movieid": {
-                  "example": "any"
-                }
-              }
+  "put": {
+    "tags": [
+      "Session"
+    ],
+    "description": "Update session and its prices",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "type": "string",
+        "description": "ID of the session to update"
+      },
+      {
+        "name": "body",
+        "in": "body",
+        "required": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "starttime": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-06-10T18:00:00Z",
+              "description": "Start time of the session"
+            },
+            "hallid": {
+              "type": "integer",
+              "example": 2,
+              "description": "ID of the hall"
+            },
+            "movieid": {
+              "type": "integer",
+              "example": 7,
+              "description": "ID of the movie"
+            },
+            "price": {
+              "type": "number",
+              "format": "float",
+              "example": 12.5,
+              "description": "Price for each ticket"
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+          "required": ["starttime", "hallid", "movieid", "price"]
+        },
+        "description": "Session update payload"
       }
-    },
+    ],
+    "responses": {
+      "200": {
+        "description": "Session and prices updated successfully"
+      },
+      "400": {
+        "description": "Bad Request"
+      },
+      "403": {
+        "description": "Forbidden"
+      },
+      "404": {
+        "description": "Session not found"
+      },
+      "500": {
+        "description": "Internal Server Error"
+      }
+    }
+  }
+},
 
 
 "/session/{id}/full": {

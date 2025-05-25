@@ -22,7 +22,7 @@ function ShowTimePage() {
             const response = await axios.get(url);
             const enhancedSessions = await enhanceWithPostersForSessions(response.data);
             const today = new Date();
-            today.setHours(0, 0, 0, 0);
+           
             const filtered = enhancedSessions.filter(s => new Date(s.starttime) >= today);
             setSessions(filtered);
         } catch (error) {

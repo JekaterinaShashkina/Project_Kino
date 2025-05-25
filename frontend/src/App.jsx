@@ -9,6 +9,8 @@ import './App.css'
 import FilmDetailPage from './pages/FilmDetailPage';
 import SessionDetailsPage from './pages/SessionDetailsPage'
 import AddSessionPage from './pages/AddSessionPage';
+import UpdateSessionPage from './pages/UpdateSessionPage';
+import EditSessionPage from './pages/EditSessionPage';
 
 function App() {
 
@@ -21,6 +23,8 @@ function App() {
       <Route path='/showtime' element={<ShowTimePage/>}/>
       <Route path="/session/:id" element={<SessionDetailsPage />} />
       <Route path="/admin/sessions/new" element={<AddSessionPage />} />
+      <Route path="/admin/sessions" element={<UpdateSessionPage />} />
+      <Route path="/admin/sessions/update/:id" element={<EditSessionPage />} />
     </Routes>
   )
 }

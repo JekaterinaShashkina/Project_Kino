@@ -214,35 +214,74 @@ exports.getSessionWithSeats = async (req, res) => {
 
 
 exports.updateSession = async (req, res) => {
-    const { id } = req.params    
-    const { starttime, hallid, movieid } = req.body    
-    try {     
-        const session = await models.session.findByPk(id)      
-        if (!session) {       
-            return res.status(404).json({ message: 'Session not found' })      
-        }     
-        if (hallid !== undefined) {
-            const hall = await models.hall.findByPk(hallid);
-            if (!hall) {
-              return res.status(400).json({ error: 'Hall not found' });
-            }
-            session.hallid = hallid;
-          }
-        if (movieid !== undefined) {
-        const movie = await models.movie.findByPk(movieid);
+    const db = require('../config/database');
+    const t = await db.transaction();
+    try {
+        const { id } = req.params;
+        const { starttime, hallid, movieid, price } = req.body;
+
+        if (!starttime || !hallid || !movieid || !price) {
+            await t.rollback();
+            return res.status(400).json({ error: 'starttime, hallid, movieid, and price are required' });
+        }
+
+        // Проверяем существование сеанса
+        const session = await models.session.findByPk(id, { transaction: t });
+        if (!session) {
+            await t.rollback();
+            return res.status(404).json({ message: 'Session not found' });
+        }
+
+        // Проверяем зал
+        const hall = await models.hall.findByPk(hallid, { transaction: t });
+        if (!hall) {
+            await t.rollback();
+            return res.status(400).json({ error: 'Hall not found' });
+        }
+
+        // Проверяем фильм
+        const movie = await models.movie.findByPk(movieid, { transaction: t });
         if (!movie) {
+            await t.rollback();
             return res.status(400).json({ error: 'Movie not found' });
         }
-        session.movieid = movieid;
-        }  
-        if (starttime !== undefined) {
-            session.starttime = starttime; // строкой в формате 'YYYY-MM-DD HH:mm:ss'
+
+        if (isNaN(price) || price <= 0) {
+            await t.rollback();
+            return res.status(400).json({ error: 'Price must be a number greater than 0' });
         }
-        await session.save()      
-        
-        res.status(200).json({ message: 'Session updated', session })    
-    } catch (error) {     
-        console.error(error)      
-        res.status(500).json({ error: 'An error occurred while updating session' })    
-    } 
-}
+
+        // Обновляем сеанс
+        session.starttime = starttime;
+        session.hallid = hallid;
+        session.movieid = movieid;
+        await session.save({ transaction: t });
+
+        // Получаем все места в зале
+        const places = await models.place.findAll({
+            where: { hallid },
+            transaction: t
+        });
+
+        // Удаляем старые цены
+        await models.price.destroy({ where: { sessionid: id }, transaction: t });
+
+        // Создаем новые цены
+        const pricePromises = places.map(place =>
+            models.price.create({
+                sessionid: id,
+                placeid: place.placeid,
+                price: price
+            }, { transaction: t })
+        );
+        await Promise.all(pricePromises);
+
+        await t.commit();
+        res.status(200).json({ message: 'Session and prices updated successfully', session });
+
+    } catch (error) {
+        console.error(error);
+        await t.rollback();
+        res.status(500).json({ error: 'Error updating session and prices' });
+    }
+};
