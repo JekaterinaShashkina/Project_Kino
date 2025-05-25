@@ -8,6 +8,7 @@ import ShowTimePage from './pages/ShowTimePage';
 import './App.css'
 import FilmDetailPage from './pages/FilmDetailPage';
 import SessionDetailsPage from './pages/SessionDetailsPage'
+import AddSessionPage from './pages/AddSessionPage';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
       <Route path="/search-results" element={<SearchResults />} />
       <Route path='/showtime' element={<ShowTimePage/>}/>
       <Route path="/session/:id" element={<SessionDetailsPage />} />
+      <Route path="/admin/sessions/new" element={<AddSessionPage />} />
     </Routes>
   )
 }

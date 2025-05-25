@@ -1083,46 +1083,63 @@
           }
         }
       },
+
       "post": {
-        "tags": [
-          "Session"
-        ],
-        "description": "Post new session",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "starttime": {
-                  "example": "any"
+          "tags": [
+            "Session"
+          ],
+          "description": "Post new session with automatic price entries",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "starttime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2025-06-10T18:00:00Z"
+                  },
+                  "hallid": {
+                    "type": "integer",
+                    "example": 2
+                  },
+                  "movieid": {
+                    "type": "integer",
+                    "example": 7
+                  },
+                  "price": {
+                    "type": "number",
+                    "format": "float",
+                    "example": 12.5
+                  }
                 },
-                "hallid": {
-                  "example": "any"
-                },
-                "movieid": {
-                  "example": "any"
+                "example": {
+                  "starttime": "2025-06-10T18:00:00Z",
+                  "hallid": 2,
+                  "movieid": 7,
+                  "price": 12.5
                 }
               }
             }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "500": {
-            "description": "Internal Server Error"
+          ],
+          "responses": {
+            "201": {
+              "description": "Session and prices created successfully"
+            },
+            "400": {
+              "description": "Bad Request"
+            },
+            "403": {
+              "description": "Forbidden"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
           }
         }
-      }
     },
     "/sessions/date/{date}": {
       "get": {

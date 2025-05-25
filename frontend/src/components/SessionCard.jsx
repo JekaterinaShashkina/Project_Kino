@@ -1,7 +1,7 @@
 import { Box, Typography, Button } from '@mui/material';
 import MovieIcon from '@mui/icons-material/Movie';
 import { Link, useNavigate } from 'react-router-dom';
-import CardBase from './CardBase';  // Можно использовать или оставить код напрямую
+import CardBase from './CardBase';  
 
 const SessionCard = ({ session, posterUrl }) => {
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ const SessionCard = ({ session, posterUrl }) => {
     return (
         <Box sx={{ m: 2, display: 'flex', justifyContent: 'center' }}>
             <CardBase sx={{
-                width: '350px',  // Туже, чем раньше
+                width: '350px',  
                 display: 'flex',
                 alignItems: 'center',
                 p: 2

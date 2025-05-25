@@ -10,6 +10,9 @@ import { useState,useEffect } from 'react';
 import { searchFilms} from '../services/filmService.js';
 import { enhanceWithPosters } from '../utils/enhanceWithPosters.js';
 import { fetchCategories } from '../services/categoryService.js';
+import { Menu, IconButton } from '@mui/material';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+
 
 const Header = () => {
     const { user, logout } = useAuth();
@@ -19,6 +22,7 @@ const Header = () => {
     const [toDate, setToDate] = useState(null);
     const [categories, setCategories] = useState([]);
     const navigate = useNavigate()
+    const [anchorEl, setAnchorEl] = useState(null);
 
         useEffect(() => {
     const loadCategories = async () => {
@@ -46,6 +50,7 @@ const Header = () => {
             console.error('Search failed', error);
         }
     }
+    const isAdmin = user && user.roles && user.roles.includes('Admin');
     return (
         <AppBar sx={{ backgroundColor: '#FF00FF' }}>
         <Toolbar sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: '5px'}}>
@@ -56,16 +61,34 @@ const Header = () => {
             <AppButton component={Link} to="/showtime">
                 ShowTimes
             </AppButton>
-        { user ? (
-            <Box sx={{display: 'flex', alignItems: 'center', justifyContent:'flex-end', gap: '20px', mr: '40px'}}>
-            <Typography component="span" mr={2} color='#000' sx={{fontSize: '1.2rem'}}>
-                User: {user.username}
-            </Typography>
-            <AppButton onClick={logout}>
-                Logout
-            </AppButton>
-            </Box>
-        ) : (
+            { user ? (
+                <Box sx={{display: 'flex', alignItems: 'center', justifyContent:'flex-end', gap: '20px', mr: '40px'}}>
+                <Typography component="span" mr={2} color='#000' sx={{fontSize: '1.2rem'}}>
+                    User: {user.username}
+                </Typography>
+                <IconButton
+                    size="large"
+                    edge="end"
+                    color="inherit"
+                    onClick={(e) => setAnchorEl(e.currentTarget)}
+                >
+                    <AccountCircle />
+                </IconButton>
+                <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
+                            {isAdmin && (
+                                <>
+                                    <MenuItem component={Link} to="/admin/sessions/new" onClick={() => setAnchorEl(null)}>
+                                        Create Session
+                                    </MenuItem>
+                                    <MenuItem component={Link} to="/admin/sessions" onClick={() => setAnchorEl(null)}>
+                                        Manage Sessions
+                                    </MenuItem>
+                                </>
+                            )}
+                            <MenuItem onClick={() => { logout(); setAnchorEl(null); }}>Logout</MenuItem>
+                        </Menu>
+                </Box>
+            ) : (
             <AppButton component={Link} to="/auth">
                 SignIn
             </AppButton>

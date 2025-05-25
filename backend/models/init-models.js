@@ -77,6 +77,7 @@ function initModels(sequelize) {
     ticket,
     useraccount,
     userrole,
+
   };
 }
 module.exports = initModels;

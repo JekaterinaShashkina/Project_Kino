@@ -19,41 +19,72 @@ exports.getAllSessions = async (req, res) => {
       });
       res.json(sessions);
     } catch (err) {
-      console.error(err); // полезно для отладки
+      console.error(err); 
       res.status(500).json({ error: 'Error' });
     }
   };
   
-exports.createSession = async (req, res) => {
+  exports.createSession = async (req, res) => {
+    const db = require('../config/database');
+    const t = await db.transaction();
     try {
-        const { starttime, hallid, movieid } = req.body;
-  
-        if (!starttime || !hallid || !movieid) {
-        return res.status(400).json({ error: 'starttime, hallid and movieid are required' });
-        }  
+        const { starttime, hallid, movieid, price } = req.body;
 
-        const hall = await models.hall.findByPk(hallid);
-        if (!hall) {
-        return res.status(400).json({ error: 'Hall not found' });
+        if (!starttime || !hallid || !movieid || !price) {
+            return res.status(400).json({ error: 'starttime, hallid, movieid, and price are required' });
         }
 
-        const movie = await models.movie.findByPk(movieid);
+        // Проверяем существование зала
+        const hall = await models.hall.findByPk(hallid, { transaction: t });
+        if (!hall) {
+            await t.rollback();
+            return res.status(400).json({ error: 'Hall not found' });
+        }
+
+        // Проверяем существование фильма
+        const movie = await models.movie.findByPk(movieid, { transaction: t });
         if (!movie) {
+            await t.rollback();
             return res.status(400).json({ error: 'Movie not found' });
         }
 
+        if (isNaN(price) || price <= 0) {
+            await t.rollback();
+            return res.status(400).json({ error: 'Price must be a number greater than 0' });
+        }
+        // Создаём новый сеанс
         const newSession = await models.session.create({
             starttime,
             hallid,
             movieid
+        }, { transaction: t });
+
+        // Получаем все места в зале
+        const places = await models.place.findAll({
+            where: { hallid },
+            transaction: t
         });
-  
-      res.status(201).json({ message: 'Session created', session: newSession });
+
+        // Создаём записи цен для всех мест
+        const pricePromises = places.map(place =>
+            models.price.create({
+                sessionid: newSession.sessionid,
+                placeid: place.placeid,
+                price: price
+            }, { transaction: t })
+        );
+        await Promise.all(pricePromises);
+
+        await t.commit(); 
+        res.status(201).json({ message: 'Session and prices created successfully', session: newSession });
+
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Error creating session' });
+        console.error(err);
+        await t.rollback(); 
+        res.status(500).json({ error: 'Error creating session and prices' });
     }
-  };
+};
+
 
 exports.getSessionsByDate = async (req, res) => {
     try {
