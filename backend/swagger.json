@@ -1421,39 +1421,103 @@
         }
       }
     },
-    "/tickets/{id}/refund": {
-      "post": {
-        "tags": [
-          "Ticket"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
+"/tickets/{id}/refund": {
+  "post": {
+    "tags": [
+      "Ticket"
+    ],
+    "description": "Возврат билета пользователем. Билет можно вернуть только если до начала сеанса осталось более 1 часа.",
+    "parameters": [
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "type": "string",
+        "description": "ID билета"
+      }
+    ],
+    "responses": {
+      "200": {
+        "description": "Билет успешно возвращён",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Ticket refunded successfully"
+                },
+                "ticket": {
+                  "type": "object",
+                  "properties": {
+                    "ticketid": {
+                      "type": "integer",
+                      "example": 123
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "refunded"
+                    }
+                  }
+                }
+              }
+            }
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
+        }
+      },
+      "400": {
+        "description": "Ошибка возврата билета (например, поздно возвращать или билет не активен)",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Refunds are not allowed within 1 hour before the session"
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Билет не найден",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Ticket not found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Внутренняя ошибка сервера",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Internal server error"
+                }
+              }
+            }
           }
         }
       }
-    },
+    }
+  }
+},
+
     "/tickets/user/{userid}": {
       "get": {
         "tags": [

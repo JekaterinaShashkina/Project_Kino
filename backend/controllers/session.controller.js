@@ -2,7 +2,8 @@ const e = require('express');
 const db = require('../config/database');
 const initModels = require('../models/init-models');
 const models = initModels(db);
-const { Op } = require('sequelize');
+const { Sequelize, Op } = require('sequelize'); 
+
 
 
 exports.getAllSessions = async (req, res) => {
@@ -172,7 +173,10 @@ exports.getSessionWithSeats = async (req, res) => {
 
         // Получаем забронированные места для этой сессии
         const bookedSeats = await models.ticket.findAll({
-            where: { sessionid: id },
+            where: {
+                sessionid: id,
+                status: { [Sequelize.Op.ne]: 'refunded' } // Используем Sequelize напрямую
+            },
             attributes: ['placeid']
         });
 

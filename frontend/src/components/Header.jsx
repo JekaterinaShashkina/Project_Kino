@@ -80,7 +80,10 @@ const Header = () => {
                             anchorEl={anchorEl}
                             open={Boolean(anchorEl)}
                             onClose={() => setAnchorEl(null)}
-                        >
+                        > 
+                            <MenuItem key="create" component={Link} to="/my-tickets" onClick={() => setAnchorEl(null)}>
+                                My Ticket
+                            </MenuItem>,
                             {isAdmin && [
                                 <MenuItem key="create" component={Link} to="/admin/sessions/new" onClick={() => setAnchorEl(null)}>
                                     Create Session
