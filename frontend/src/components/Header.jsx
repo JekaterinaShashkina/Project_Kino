@@ -1,4 +1,4 @@
-import { AppBar, Box, Toolbar, Typography, InputBase, Select, MenuItem, Grid, Menu, IconButton, TextField } from '@mui/material'
+import { AppBar, Box, Toolbar, Typography, InputBase, Select, MenuItem, Grid, Menu, IconButton, TextField, Collapse } from '@mui/material'
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
@@ -11,6 +11,7 @@ import { searchFilms } from '../services/filmService.js';
 import { enhanceWithPosters } from '../utils/enhanceWithPosters.js';
 import { fetchCategories } from '../services/categoryService.js';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Header = () => {
     const { user, logout } = useAuth();
@@ -21,6 +22,7 @@ const Header = () => {
     const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState(null);
+    const [searchOpen, setSearchOpen] = useState(false);
 
     useEffect(() => {
         const loadCategories = async () => {
@@ -58,7 +60,26 @@ const Header = () => {
                     {/* Исправленный путь к логотипу */}
                     <img src="/logo-black.png" height="64px" alt="Logo" />
                 </Typography>
-
+                <IconButton onClick={() => setSearchOpen((prev) => !prev)}   sx={{
+                        p: 1,
+                        '&:hover': {
+                        outline: 'none',
+                        boxShadow: 'none',
+                        border: 'none',
+                        },
+                        '&:focus': {
+                        outline: 'none',
+                        boxShadow: 'none',
+                        border: 'none',
+                        },
+                        '&:active': {
+                        outline: 'none',
+                        boxShadow: 'none',
+                        border: 'none',
+                        },
+                    }}>
+                    {searchOpen ? <CloseIcon /> : <SearchIcon />}
+                </IconButton>
                 <AppButton component={Link} to="/showtime">
                     ShowTimes
                 </AppButton>
@@ -101,7 +122,7 @@ const Header = () => {
                     </AppButton>
                 )}
             </Toolbar>
-
+        <Collapse in={searchOpen}>
             <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center', mt: '5px' }}>
                 <Grid item xs={12} md={8} sx={{ margin: '5px 60px' }}>
                     <Box sx={{
@@ -163,11 +184,12 @@ const Header = () => {
                             }}
                         />
                     </LocalizationProvider>
-                    <AppButton onClick={handleSearch} startIcon={<SearchIcon sx={{ color: 'black' }} />}>
-                        Search
-                    </AppButton>
+                <AppButton onClick={handleSearch} startIcon={<SearchIcon sx={{ color: 'black' }} />}>
+                    Search
+                </AppButton>
                 </Grid>
             </Grid>
+            </Collapse>
         </AppBar>
     )
 }
