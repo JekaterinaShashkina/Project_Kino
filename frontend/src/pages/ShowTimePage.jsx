@@ -49,10 +49,6 @@ function ShowTimePage() {
             <Header />
             <Box sx={{ pt: '130px', px: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Typography variant="h4" gutterBottom sx={{ color: '#DA70D6', fontSize: '36px' }}>Sessions List</Typography>
-
-
-
-
                 {/* Фильтр по дате с DatePicker */}
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <Box sx={{
@@ -61,37 +57,36 @@ function ShowTimePage() {
                         gap: 2,
                         alignItems: 'stretch',
                     }}>
-<DatePicker
-  label="Select date"
-  value={selectedDate}
-  onChange={handleDateChange}
-  format="MM/dd/yyyy"
-  slotProps={{
-    textField: {
-      sx: {
-        flex: 1,
-        height: '56px',
-        border: '1px solid #DA70D6',                          
-        borderRadius: '8px',                                  
-        '& .MuiOutlinedInput-root': {
-          '& fieldset': { borderColor: 'transparent' },       
-          '&:hover fieldset': { borderColor: 'transparent' },
-          '&.Mui-focused fieldset': { borderColor: 'transparent' },
-          backgroundColor: '#222',
-        },
-        '& .MuiInputBase-input': { color: '#DA70D6' },        
-        '& .MuiSvgIcon-root': { color: '#DA70D6' },           
-        '& label': { color: '#DA70D6' }                       
-      }
-    }
-  }}
-/>
+                <DatePicker
+                    label="Select date"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    format="MM/dd/yyyy"
+                    slotProps={{
+                        textField: {
+                        InputProps: {
+                            sx: {
+                            color: '#DA70D6', // цвет текста даты
+                            '& input': {
+                                color: '#DA70D6',
+                            },
+                            },
+                        },
+                        InputLabelProps: {
+                            sx: {
 
+                            color: '#DA70D6', // цвет лейбла "Select date"
+                            },
+                        },
+                        sx: {
 
-
-
-
-
+                            '& .MuiSvgIcon-root': {
+                            color: '#DA70D6', // цвет иконки календаря
+                            },
+                        },
+                        },
+                    }}
+                />
                         <Button
                             variant="outlined"
                             onClick={() => { setSelectedDate(null); loadSessions(); }}
@@ -118,7 +113,7 @@ function ShowTimePage() {
                 </Grid>
 
                 {sessions.length === 0 && (
-                    <Typography variant="body1" color="textSecondary" sx={{ mt: 4 }}>
+                    <Typography variant="body1" color="#DA70D6" sx={{ mt: 4 }}>
                         No sessions available for the selected date.
                     </Typography>
                 )}

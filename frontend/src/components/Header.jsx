@@ -106,6 +106,9 @@ const Header = () => {
                                 My Ticket
                             </MenuItem>,
                             {isAdmin && [
+                                <MenuItem key="create" component={Link} to="/admin/movie/new" onClick={() => setAnchorEl(null)}>
+                                    Create Movie
+                                </MenuItem>,
                                 <MenuItem key="create" component={Link} to="/admin/sessions/new" onClick={() => setAnchorEl(null)}>
                                     Create Session
                                 </MenuItem>,

@@ -12,6 +12,7 @@ import AddSessionPage from './pages/AddSessionPage';
 import UpdateSessionPage from './pages/UpdateSessionPage';
 import EditSessionPage from './pages/EditSessionPage';
 import MyTicketsPage from './pages/MyTicketsPage';
+import MovieAddPage from './pages/MovieAddPage';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
       <Route path="/search-results" element={<SearchResults />} />
       <Route path='/showtime' element={<ShowTimePage/>}/>
       <Route path="/session/:id" element={<SessionDetailsPage />} />
+      <Route path='/admin/movie/new' element={<MovieAddPage/>}/>
       <Route path="/admin/sessions/new" element={<AddSessionPage />} />
       <Route path="/admin/sessions" element={<UpdateSessionPage />} />
       <Route path="/admin/sessions/update/:id" element={<EditSessionPage />} />
