@@ -14,21 +14,22 @@ export const AuthProvider = ({children}) => {
             if(now > parseInt(expiry)) {
                 localStorage.removeItem('user');
                 localStorage.removeItem('user_expiry');
-                localStorage.removeItem('token');                
-            } 
-        } else {
-            setUser(JSON.parse(storedUser))
+                localStorage.removeItem('token');    
+                setUser(null);            
+    
+            } else {
+                setUser(JSON.parse(storedUser))
+            }
         }
 
     }, [])
 
     const login = (userData) => {
-        console.log('userData:', userData);
         const fullUser = {
             ...userData,
         };
         const now = new Date().getTime();
-        const expiryTime = now + 24 * 60 * 60 * 1000;
+        const expiryTime = now + 2 * 60 * 1000;
         setUser(fullUser)
         
         localStorage.setItem('user', JSON.stringify(fullUser))
@@ -42,20 +43,6 @@ export const AuthProvider = ({children}) => {
         localStorage.removeItem('token')
     }
 
-    useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        const token = localStorage.getItem('token');
-    
-        if (storedUser && token) {
-            try {
-                const parsed = JSON.parse(storedUser);
-                setUser({ ...parsed, token });                
-            } catch (error) {
-                console.error('Failed to parse user from localStorage', error);
-                logout();                
-            }
-        }
-      }, []);
     return (
             <AuthContext.Provider value={{ user, login, logout }}>
             {children}

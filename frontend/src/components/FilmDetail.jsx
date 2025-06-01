@@ -37,7 +37,12 @@ export const FilmDetail = () => {
 
     return  (
         <>
-        <Box sx={{ maxWidth: '1280px', margin: 'auto', display: 'flex', justifyContent: 'space-between', gap: '40px'}}>
+        <Box sx={{ maxWidth: '1280px', margin: 'auto', display: 'flex', justifyContent: 'space-between', gap: '40px',    
+        flexDirection: {
+            xs: 'column',  // <600px
+            sm: 'column',  // <900px
+            md: 'row',     // ≥900px — в строку
+            },}}>
             <Box
                 component="img"
                 src={poster}
@@ -47,7 +52,7 @@ export const FilmDetail = () => {
                 border: 'solid 1px #DA70D6',
                 borderRadius: 2,
                 boxShadow: 3,
-                objectFit: 'cover'
+                objectFit: 'contain'
                 }}
             />
             <Box sx={{border: 'solid 1px #DA70D6', borderRadius: 2, p: 4, color: ' #EE82EE', }}>
@@ -65,15 +70,21 @@ export const FilmDetail = () => {
         </Box>
         <Box>
                         {film.trailerKey && (
-                <Box mt={4} sx={{border: 'solid 1px #DA70D6', borderRadius: 2, p: 2}}>
+                <Box mt={4} sx={{border: 'solid 1px #DA70D6', borderRadius: 2, p: 2,       position: 'relative',
+      paddingTop: '56.25%'}}>
                     <iframe
-                    width="100%"
-                    height="400"
-                    src={`https://www.youtube.com/embed/${film.trailerKey}`}
-                    title="YouTube trailer"
-                    frameBorder="0"
-                    allow="autoplay; encrypted-media"
-                    allowFullScreen
+      src={`https://www.youtube.com/embed/${film.trailerKey}`}
+      title="YouTube trailer"
+      allow="autoplay; encrypted-media"
+      allowFullScreen
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        border: 'none',
+      }}
                     />
                 </Box>
             )}

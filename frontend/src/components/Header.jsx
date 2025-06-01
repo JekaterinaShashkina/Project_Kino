@@ -60,6 +60,7 @@ const Header = () => {
                     {/* Исправленный путь к логотипу */}
                     <img src="/logo-black.png" height="64px" alt="Logo" />
                 </Typography>
+                <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px' }}>
                 <IconButton onClick={() => setSearchOpen((prev) => !prev)}   sx={{
                         p: 1,
                         '&:hover': {
@@ -87,7 +88,7 @@ const Header = () => {
                 {user ? (
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '20px', mr: '40px' }}>
                         <Typography component="span" mr={2} color='#000' sx={{ fontSize: '1.2rem' }}>
-                            User: {user.username}
+                            {user.roles}: {user.username}
                         </Typography>
                         <IconButton
                             size="large"
@@ -95,7 +96,7 @@ const Header = () => {
                             color="inherit"
                             onClick={(e) => setAnchorEl(e.currentTarget)}
                         >
-                            <AccountCircle />
+                            <AccountCircle sx={{color:'black' }}/>
                         </IconButton>
                         <Menu
                             anchorEl={anchorEl}
@@ -124,6 +125,7 @@ const Header = () => {
                         SignIn
                     </AppButton>
                 )}
+                </Box>
             </Toolbar>
         <Collapse in={searchOpen}>
             <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center', mt: '5px' }}>
