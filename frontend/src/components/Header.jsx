@@ -1,202 +1,105 @@
-import { AppBar, Box, Toolbar, Typography, InputBase, Select, MenuItem, Grid, Menu, IconButton, TextField, Collapse } from '@mui/material'
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext';
+import { AppBar, Box, Toolbar, Typography, IconButton, Collapse } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs from 'dayjs';
+import CloseIcon from '@mui/icons-material/Close';
+import MenuIcon from '@mui/icons-material/Menu';
 import { AppButton } from './buttonStyles.jsx';
+import { useAuth } from '../context/AuthContext';
 import { useState, useEffect } from 'react';
+import { fetchCategories } from '../services/categoryService.js';
 import { searchFilms } from '../services/filmService.js';
 import { enhanceWithPosters } from '../utils/enhanceWithPosters.js';
-import { fetchCategories } from '../services/categoryService.js';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import CloseIcon from '@mui/icons-material/Close';
+import SearchFilters from './SearchFilter';
+import UserMenu from './UserMenu';
+import ResponsiveDrawer from './ResponsiveDrawer';
 
 const Header = () => {
-    const { user, logout } = useAuth();
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState("");
-    const [fromDate, setFromDate] = useState(null);
-    const [toDate, setToDate] = useState(null);
-    const [categories, setCategories] = useState([]);
-    const navigate = useNavigate();
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [searchOpen, setSearchOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    const toggleDrawer = (open) => () => {
+        setDrawerOpen(open);
+    };
 
     useEffect(() => {
-        const loadCategories = async () => {
-            try {
-                const data = await fetchCategories();
-                setCategories(data);
-            } catch (error) {
-                console.error('Failed to fetch categories', error);
-            }
-        };
-        loadCategories();
+        fetchCategories().then(setCategories).catch(err => console.error('Failed to load categories', err));
     }, []);
 
-    const handleSearch = async () => {
-        try {
-            const results = await searchFilms({
-                title: searchTerm,
-                category: selectedCategory,
-                releasedateFrom: fromDate,
-                releasedateTo: toDate
-            });
-            const updated = await enhanceWithPosters(results);
-            navigate('/search-results', { state: { results: updated } });
-        } catch (error) {
-            console.error('Search failed', error);
-        }
+  const handleSearch = async () => {
+    try {
+      const results = await searchFilms({ title: searchTerm, category: selectedCategory, releasedateFrom: fromDate, releasedateTo: toDate });
+      const updated = await enhanceWithPosters(results);
+      navigate('/search-results', { state: { results: updated } });
+    } catch (error) {
+      console.error('Search failed', error);
     }
+  };
 
-    const isAdmin = user && user.roles && user.roles.includes('Admin');
+  return (
+    <AppBar sx={{ backgroundColor: '#FF00FF' }}>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: '5px' }}>
+        <Typography variant="h6" component={Link} to="/" sx={{ textDecoration: 'none' }}>
+          <img src="/logo-black.png" height="64px" alt="Logo" />
+        </Typography>
+        <IconButton
+        sx={{ display: { xs: 'flex', sm: 'none' } }}
+        onClick={toggleDrawer(true)}
+        >
+        <MenuIcon sx={{ color: 'black' }} />
+        </IconButton>
+        <ResponsiveDrawer
+            open={drawerOpen}
+            toggleDrawer={toggleDrawer}
+            isAdmin={user}
+            user={user}
+            onLogout={logout}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            fromDate={fromDate}
+            setFromDate={setFromDate}
+            toDate={toDate}
+            setToDate={setToDate}
+            categories={categories}
+            handleSearch={handleSearch}
+            />
+        <Box sx={{ display: {xs: 'none', sm: 'flex'}, alignItems: 'center', gap: 2 }}>
+          <IconButton onClick={() => setSearchOpen(prev => !prev)} sx={{ p: 1 }}>
+            {searchOpen ? <CloseIcon /> : <SearchIcon />}
+          </IconButton>
+          <AppButton component={Link} to="/showtime">ShowTimes</AppButton>
+          {user
+            ? <UserMenu user={user} anchorEl={anchorEl} setAnchorEl={setAnchorEl} logout={logout} />
+            : <AppButton component={Link} to="/auth">Sign In</AppButton>
+          }
+        </Box>
+      </Toolbar>
 
-    return (
-        <AppBar sx={{ backgroundColor: '#FF00FF' }}>
-            <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: '5px' }}>
-                <Typography variant="h6" component={Link} to="/" sx={{ textDecoration: 'none' }}>
-                    {/* Исправленный путь к логотипу */}
-                    <img src="/logo-black.png" height="64px" alt="Logo" />
-                </Typography>
-                <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px' }}>
-                <IconButton onClick={() => setSearchOpen((prev) => !prev)}   sx={{
-                        p: 1,
-                        '&:hover': {
-                        outline: 'none',
-                        boxShadow: 'none',
-                        border: 'none',
-                        },
-                        '&:focus': {
-                        outline: 'none',
-                        boxShadow: 'none',
-                        border: 'none',
-                        },
-                        '&:active': {
-                        outline: 'none',
-                        boxShadow: 'none',
-                        border: 'none',
-                        },
-                    }}>
-                    {searchOpen ? <CloseIcon /> : <SearchIcon />}
-                </IconButton>
-                <AppButton component={Link} to="/showtime">
-                    ShowTimes
-                </AppButton>
-
-                {user ? (
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '20px', mr: '40px' }}>
-                        <Typography component="span" mr={2} color='#000' sx={{ fontSize: '1.2rem' }}>
-                            {user.roles}: {user.username}
-                        </Typography>
-                        <IconButton
-                            size="large"
-                            edge="end"
-                            color="inherit"
-                            onClick={(e) => setAnchorEl(e.currentTarget)}
-                        >
-                            <AccountCircle sx={{color:'black' }}/>
-                        </IconButton>
-                        <Menu
-                            anchorEl={anchorEl}
-                            open={Boolean(anchorEl)}
-                            onClose={() => setAnchorEl(null)}
-                        > 
-                            <MenuItem key="create" component={Link} to="/my-tickets" onClick={() => setAnchorEl(null)}>
-                                My Ticket
-                            </MenuItem>,
-                            {isAdmin && [
-                                <MenuItem key="create" component={Link} to="/admin/movie/new" onClick={() => setAnchorEl(null)}>
-                                    Create Movie
-                                </MenuItem>,
-                                <MenuItem key="create" component={Link} to="/admin/sessions/new" onClick={() => setAnchorEl(null)}>
-                                    Create Session
-                                </MenuItem>,
-                                <MenuItem key="manage" component={Link} to="/admin/sessions" onClick={() => setAnchorEl(null)}>
-                                    Manage Sessions
-                                </MenuItem>
-                            ]}
-                            <MenuItem onClick={() => { logout(); setAnchorEl(null); }}>Logout</MenuItem>
-                        </Menu>
-                    </Box>
-                ) : (
-                    <AppButton component={Link} to="/auth">
-                        SignIn
-                    </AppButton>
-                )}
-                </Box>
-            </Toolbar>
-        <Collapse in={searchOpen}>
-            <Grid container sx={{ justifyContent: 'space-between', alignItems: 'center', mt: '5px' }}>
-                <Grid item xs={12} md={8} sx={{ margin: '5px 60px' }}>
-                    <Box sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        backgroundColor: '#222',
-                        padding: '4px 8px',
-                        borderRadius: '8px',
-                        color: '#fff',
-                    }}>
-                        <InputBase placeholder="Search…"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            sx={{ color: '#fff', width: '350px' }}
-                        />
-                    </Box>
-                </Grid>
-                <Grid item xs={12} md={8} sx={{ margin: '5px 60px' }}>
-                    <Select sx={{ mr: 2, height: '40px' }}
-                        size="small"
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                        displayEmpty
-                    >
-                        <MenuItem value="">All categories</MenuItem>
-                        {categories.map((cat) => (
-                            <MenuItem key={cat.categoryid} value={cat.catname}>
-                                {cat.catname}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                            views={['year']}
-                            label="Release Year From"
-                            value={fromDate}
-                            onChange={(newValue) => setFromDate(newValue)}
-                            minDate={dayjs('1940-01-01')}
-                            maxDate={dayjs('2025-12-31')}
-                            slotProps={{
-                                textField: {
-                                    size: 'small',
-                                    sx: { width: '150px', mr: 2 }
-                                }
-                            }}
-                        />
-                        <DatePicker
-                            views={['year']}
-                            label="Release Year To"
-                            value={toDate}
-                            onChange={(newValue) => setToDate(newValue)}
-                            minDate={dayjs('1940-01-01')}
-                            maxDate={dayjs('2025-12-31')}
-                            slotProps={{
-                                textField: {
-                                    size: 'small',
-                                    sx: { width: '150px', mr: 2 }
-                                }
-                            }}
-                        />
-                    </LocalizationProvider>
-                <AppButton onClick={handleSearch} startIcon={<SearchIcon sx={{ color: 'black' }} />}>
-                    Search
-                </AppButton>
-                </Grid>
-            </Grid>
-            </Collapse>
-        </AppBar>
-    )
-}
+      <Collapse in={searchOpen}>
+        <SearchFilters
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          fromDate={fromDate}
+          setFromDate={setFromDate}
+          toDate={toDate}
+          setToDate={setToDate}
+          categories={categories}
+          onSearch={handleSearch}
+        />
+      </Collapse>
+    </AppBar>
+  );
+};
 
 export default Header;

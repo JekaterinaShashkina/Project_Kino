@@ -1,6 +1,5 @@
 import MainContent from "../components/MainContent"
 import Header from "../components/Header"
-import SideBar from "../components/SideBar"
 import {Box} from '@mui/material'
 
 function HomePage() {
@@ -10,7 +9,6 @@ function HomePage() {
                 <Header/>
             </Box>
             <Box sx={{pt: '130px'}}>            
-                <SideBar/>
                 <MainContent/>
             </Box>
         </Box>
