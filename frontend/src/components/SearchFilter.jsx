@@ -45,7 +45,7 @@ const SearchFilters = ({
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           views={['year']}
-          label="Release Year From"
+          label="Release From"
           value={fromDate}
           onChange={(newValue) => setFromDate(newValue)}
           minDate={dayjs('1940-01-01')}
@@ -54,7 +54,7 @@ const SearchFilters = ({
         />
         <DatePicker
           views={['year']}
-          label="Release Year To"
+          label="Release To"
           value={toDate}
           onChange={(newValue) => setToDate(newValue)}
           minDate={dayjs('1940-01-01')}

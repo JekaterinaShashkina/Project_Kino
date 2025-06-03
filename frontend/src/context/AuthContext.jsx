@@ -29,7 +29,7 @@ export const AuthProvider = ({children}) => {
             ...userData,
         };
         const now = new Date().getTime();
-        const expiryTime = now + 2 * 60 * 1000;
+        const expiryTime = now + 60 * 60 * 1000;
         setUser(fullUser)
         
         localStorage.setItem('user', JSON.stringify(fullUser))

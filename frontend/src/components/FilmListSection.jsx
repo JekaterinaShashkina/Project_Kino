@@ -34,7 +34,7 @@ const FilmListSection = () => {
             </Typography>
             <Grid container spacing={2}>
                 {films.map((film) => (
-                    <Grid item key={film.movieid} xs={12} sm={6} md={4} lg={3}>
+                    <Grid item key={film.movieid} xs={12} sm={6} md={4} lg={3} sx={{margin: '0 auto'}}>
                         <FilmCard film={film} />
                     </Grid>
                 ))}

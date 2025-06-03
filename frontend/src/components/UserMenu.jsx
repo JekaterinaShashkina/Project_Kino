@@ -2,16 +2,10 @@ import { Box, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
-const UserMenu = ({ user, anchorEl, setAnchorEl, logout }) => {
-  console.log('User object:', user);  
+const UserMenu = ({ user, anchorEl, setAnchorEl, logout, isAdmin }) => {
   const userRoles = user?.roles ?? [];
-  console.log('User roles:', userRoles);  
 
-  const isAdmin = Array.isArray(userRoles) && userRoles.some(r => {
-    if (typeof r === 'string') return r.toLowerCase() === 'admin';  
-    if (typeof r === 'object' && r.rolename) return r.rolename.toLowerCase() === 'admin';  
-    return false;
-  });
+
 
   console.log('Is Admin:', isAdmin);  
 

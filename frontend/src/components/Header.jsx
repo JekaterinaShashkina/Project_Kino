@@ -25,7 +25,15 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
-
+  
+  let isAdmin = false
+  if (user) {
+    isAdmin = Array.isArray(user.roles) && user.roles.some(r => {
+    if (typeof r === 'string') return r.toLowerCase() === 'admin';  
+    if (typeof r === 'object' && r.rolename) return r.rolename.toLowerCase() === 'admin';  
+    return false;
+  });
+  }
   const toggleDrawer = (open) => () => setDrawerOpen(open);
 
   useEffect(() => {
@@ -64,7 +72,7 @@ const Header = () => {
           </IconButton>
           <AppButton component={Link} to="/showtime">ShowTimes</AppButton>
           {user
-            ? <UserMenu user={user} anchorEl={anchorEl} setAnchorEl={setAnchorEl} logout={logout} />
+            ? <UserMenu user={user} anchorEl={anchorEl} setAnchorEl={setAnchorEl} logout={logout} isAdmin={isAdmin} />
             : <AppButton component={Link} to="/auth">Sign In</AppButton>}
         </Box>
       </Toolbar>
@@ -73,7 +81,7 @@ const Header = () => {
       <ResponsiveDrawer
         open={drawerOpen}
         toggleDrawer={toggleDrawer}
-        isAdmin={user}
+        isAdmin={isAdmin}
         user={user}
         onLogout={logout}
         searchTerm={searchTerm}

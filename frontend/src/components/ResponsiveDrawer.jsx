@@ -1,5 +1,5 @@
 import React from 'react';
-import { Drawer, List, ListItem, ListItemText, Divider, IconButton, InputBase, Select, MenuItem, Button, Box } from '@mui/material';
+import { Drawer, List, ListItem, ListItemText, Divider, IconButton, InputBase, Select, MenuItem, Button, Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -11,8 +11,18 @@ const ResponsiveDrawer = ({ open, toggleDrawer, isAdmin, user, onLogout,
     fromDate, setFromDate, toDate, setToDate, categories, handleSearch }) => {
 
     return (
-        <Drawer anchor="right" open={open} onClose={toggleDrawer(false)} sx={{ display: {xs: 'flex', sm: 'none'}}}>
+        <Drawer anchor="right" open={open} onClose={toggleDrawer(false)} sx={{ display: {xs: 'flex', md: 'none'}}}>
+
             <List sx={{ width: 250, p: 2, backgroundColor:'#FFF0F5' }}>
+            {user && (
+                <Box sx={{ px: 2, py: 1 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', color:'#8B008B' }}>
+                        {Array.isArray(user.roles) ? user.roles.join(', ') : user.roles} : {user.username}
+                    </Typography>
+                <Divider sx={{ my: 2 }} />
+
+                </Box>
+            )}            
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, backgroundColor: '#222', p: 1, borderRadius: 1 }}>
                     <InputBase
                         placeholder="Search…"
@@ -93,6 +103,7 @@ const ResponsiveDrawer = ({ open, toggleDrawer, isAdmin, user, onLogout,
                 )}
 
                 <Divider />
+ 
 
                 {user ? (
                     <ListItem button onClick={() => { onLogout(); toggleDrawer(false)(); }}>
