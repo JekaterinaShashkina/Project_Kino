@@ -1,3 +1,4 @@
+// Header.jsx
 import { AppBar, Box, Toolbar, Typography, IconButton, Collapse } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
@@ -22,16 +23,14 @@ const Header = () => {
   const [categories, setCategories] = useState([]);
   const [searchOpen, setSearchOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
-    const [drawerOpen, setDrawerOpen] = useState(false);
 
-    const toggleDrawer = (open) => () => {
-        setDrawerOpen(open);
-    };
+  const toggleDrawer = (open) => () => setDrawerOpen(open);
 
-    useEffect(() => {
-        fetchCategories().then(setCategories).catch(err => console.error('Failed to load categories', err));
-    }, []);
+  useEffect(() => {
+    fetchCategories().then(setCategories).catch(err => console.error('Failed to load categories', err));
+  }, []);
 
   const handleSearch = async () => {
     try {
@@ -44,46 +43,52 @@ const Header = () => {
   };
 
   return (
-    <AppBar sx={{ backgroundColor: '#FF00FF' }}>
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: '5px' }}>
-        <Typography variant="h6" component={Link} to="/" sx={{ textDecoration: 'none' }}>
-          <img src="/logo-black.png" height="64px" alt="Logo" />
-        </Typography>
-        <IconButton
-        sx={{ display: { xs: 'flex', sm: 'none' } }}
-        onClick={toggleDrawer(true)}
-        >
-        <MenuIcon sx={{ color: 'black' }} />
+    <AppBar sx={{ backgroundColor: '#FF00FF', position: 'fixed' }}>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
+        {/* Logo */}
+        <Box sx={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+          <Typography variant="h6" component={Link} to="/" sx={{ textDecoration: 'none' }}>
+            <img src="/logo-black.png" height="64px" alt="Logo" />
+          </Typography>
+        </Box>
+
+        {/* Mobile menu icon */}
+        <IconButton sx={{ display: { xs: 'flex', md: 'none' } }} onClick={toggleDrawer(true)}>
+          <MenuIcon sx={{ color: 'black' }} />
         </IconButton>
-        <ResponsiveDrawer
-            open={drawerOpen}
-            toggleDrawer={toggleDrawer}
-            isAdmin={user}
-            user={user}
-            onLogout={logout}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-            fromDate={fromDate}
-            setFromDate={setFromDate}
-            toDate={toDate}
-            setToDate={setToDate}
-            categories={categories}
-            handleSearch={handleSearch}
-            />
-        <Box sx={{ display: {xs: 'none', sm: 'flex'}, alignItems: 'center', gap: 2 }}>
+
+        {/* Desktop buttons */}
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 2 }}>
           <IconButton onClick={() => setSearchOpen(prev => !prev)} sx={{ p: 1 }}>
             {searchOpen ? <CloseIcon /> : <SearchIcon />}
           </IconButton>
           <AppButton component={Link} to="/showtime">ShowTimes</AppButton>
           {user
             ? <UserMenu user={user} anchorEl={anchorEl} setAnchorEl={setAnchorEl} logout={logout} />
-            : <AppButton component={Link} to="/auth">Sign In</AppButton>
-          }
+            : <AppButton component={Link} to="/auth">Sign In</AppButton>}
         </Box>
       </Toolbar>
 
+      {/* Mobile Drawer */}
+      <ResponsiveDrawer
+        open={drawerOpen}
+        toggleDrawer={toggleDrawer}
+        isAdmin={user}
+        user={user}
+        onLogout={logout}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        fromDate={fromDate}
+        setFromDate={setFromDate}
+        toDate={toDate}
+        setToDate={setToDate}
+        categories={categories}
+        handleSearch={handleSearch}
+      />
+
+      {/* Search Panel */}
       <Collapse in={searchOpen}>
         <SearchFilters
           searchTerm={searchTerm}

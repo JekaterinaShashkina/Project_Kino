@@ -1,44 +1,46 @@
 import { useEffect, useState } from "react";
-import {fetchAllFilms} from '../services/filmService'
+import { fetchAllFilms } from '../services/filmService';
 import { Box, Grid, Typography } from "@mui/material";
-import FilmSlider from "./FilmSlider";
+import FilmCard from "./FilmCard";  // Используем карточки фильмов
 import { enhanceWithPosters } from "../utils/enhanceWithPosters";
 
 const FilmListSection = () => {
-    const [films, setFilms] = useState()
+    const [films, setFilms] = useState([]);
     const [loading, setLoading] = useState(true);
-    // const [searchTerm, setSearchTerm] = useState('')
-    //const [selectedCategory, setSelectedCategory] = useState(null)
-    // const filteredFilms = filterBooks(books, searchTerm, selectedCategory)
 
     useEffect(() => {
         const loadFilms = async () => {
             try {
-                const data = await fetchAllFilms()
-                      // Подгружаем постеры
-                const updated = await enhanceWithPosters(data)
-                setFilms(updated)
+                const data = await fetchAllFilms();
+                const updated = await enhanceWithPosters(data);
+                setFilms(updated);
             } catch (error) {
-                console.error('Error fetching films', error)
+                console.error('Error fetching films', error);
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
-        }
-        loadFilms()
-    }, [])
+        };
+        loadFilms();
+    }, []);
+
     if (loading) {
-        return (
-            <div>Loading</div>
-        )
+        return <Typography color="#FF00FF">Loading...</Typography>;
     }
+
     return (
         <Box>
-            <Typography variant="h5" gutterBottom sx={{mt: '32px', mb: '32px', color: '#FF00FF', fontSize: '28px'}}>
+            <Typography variant="h5" gutterBottom sx={{ mt: '32px', mb: '32px', color: '#FF00FF', fontSize: '28rm' }}>
                 Top Films
             </Typography>
-            <FilmSlider films={films}/>
+            <Grid container spacing={2}>
+                {films.map((film) => (
+                    <Grid item key={film.movieid} xs={12} sm={6} md={4} lg={3}>
+                        <FilmCard film={film} />
+                    </Grid>
+                ))}
+            </Grid>
         </Box>
-    )
-}
+    );
+};
 
-export default FilmListSection
+export default FilmListSection;

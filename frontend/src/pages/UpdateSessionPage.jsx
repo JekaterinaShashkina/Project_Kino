@@ -38,13 +38,13 @@ const UpdateSessionPage = () => {
       alignItems: 'center',
       maxWidth: '800px', // Сделаем шире (например, 800px)
       mx: 'auto',        // Центрируем по горизонтали
-      width: '100%'      // Полная ширина для контейнера
+      width: '90%'      // Полная ширина для контейнера
     }}
   >
     <Typography variant="h4" color="#DA70D6" mb={4}>
       Select Session to Update
     </Typography>
-    <List sx={{ width: '100%' }}> {/* Задаем ширину списка */}
+    <List sx={{ width: '90%' }}> {/* Задаем ширину списка */}
       {sessions.map(session => (
         <ListItem
           key={session.sessionid}

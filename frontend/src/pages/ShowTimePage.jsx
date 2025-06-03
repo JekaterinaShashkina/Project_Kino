@@ -1,6 +1,7 @@
 import Header from "../components/Header";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useMediaQuery } from '@mui/material';
 import { Box, Typography, Button, Grid, TextField } from '@mui/material';
 import SessionCard from "../components/SessionCard";
 import { enhanceWithPosters } from "../utils/enhanceWithPosters";
@@ -10,6 +11,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { format } from 'date-fns';
 
 function ShowTimePage() {
+    const isMobile = useMediaQuery('(max-width:600px)'); 
     const [sessions, setSessions] = useState([]);
     const [selectedDate, setSelectedDate] = useState(null); // Date object
 
@@ -48,60 +50,61 @@ function ShowTimePage() {
         <Box display="flex" flexDirection="column" minHeight="100vh">
             <Header />
             <Box sx={{ pt: '130px', px: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="h4" gutterBottom sx={{ color: '#DA70D6', fontSize: '36px' }}>Sessions List</Typography>
                 {/* Фильтр по дате с DatePicker */}
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <Box sx={{
-                        mb: 4,
-                        display: 'flex',
-                        gap: 2,
-                        alignItems: 'stretch',
-                    }}>
-                <DatePicker
-                    label="Select date"
-                    value={selectedDate}
-                    onChange={handleDateChange}
-                    format="MM/dd/yyyy"
-                    slotProps={{
-                        textField: {
-                        InputProps: {
-                            sx: {
-                            color: '#DA70D6', // цвет текста даты
-                            '& input': {
-                                color: '#DA70D6',
-                            },
-                            },
-                        },
-                        InputLabelProps: {
-                            sx: {
-
-                            color: '#DA70D6', // цвет лейбла "Select date"
-                            },
-                        },
-                        sx: {
-
-                            '& .MuiSvgIcon-root': {
-                            color: '#DA70D6', // цвет иконки календаря
-                            },
-                        },
-                        },
-                    }}
-                />
-                        <Button
-                            variant="outlined"
-                            onClick={() => { setSelectedDate(null); loadSessions(); }}
-                            sx={{
-                                borderColor: '#DA70D6',
-                                color: '#DA70D6',
-                                '&:hover': { borderColor: '#fff', color: '#fff' },
-                                height: '56px',
-                                minWidth: '150px',
-                            }}
-                        >
-                            CLEAR DATE
-                        </Button>
-                    </Box>
-                </LocalizationProvider>
+                <Typography variant="h4" gutterBottom sx={{ color: '#DA70D6', fontSize: '36px' }}>Sessions List</Typography>
+<LocalizationProvider dateAdapter={AdapterDateFns}>
+  <Box
+    sx={{
+      mb: 4,
+      display: 'flex',
+      flexDirection: isMobile ? 'column' : 'row', // адаптивное направление
+      gap: 2,
+      alignItems: isMobile ? 'stretch' : 'center', // растягиваем по ширине на мобилке
+    }}
+  >
+    <DatePicker
+      label="Select date"
+      value={selectedDate}
+      onChange={handleDateChange}
+      format="MM/dd/yyyy"
+      slotProps={{
+        textField: {
+          InputProps: {
+            sx: {
+              color: '#DA70D6', // цвет текста даты
+              '& input': {
+                color: '#DA70D6',
+              },
+            },
+          },
+          InputLabelProps: {
+            sx: {
+              color: '#DA70D6', // цвет лейбла
+            },
+          },
+          sx: {
+            '& .MuiSvgIcon-root': {
+              color: '#DA70D6', // цвет иконки
+            },
+          },
+        },
+      }}
+    />
+    <Button
+      variant="outlined"
+      onClick={() => { setSelectedDate(null); loadSessions(); }}
+      sx={{
+        borderColor: '#DA70D6',
+        color: '#DA70D6',
+        '&:hover': { borderColor: '#fff', color: '#fff' },
+        height: '56px',
+        minWidth: '150px',
+      }}
+    >
+      CLEAR DATE
+    </Button>
+  </Box>
+</LocalizationProvider>
 
                 {/* Список сеансов */}
                 <Grid container spacing={2} justifyContent="center">

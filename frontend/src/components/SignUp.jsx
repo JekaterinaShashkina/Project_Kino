@@ -41,7 +41,7 @@ const SignUp = () => {
         alignItems="center"
         minHeight="80vh"
       >
-        <Paper elevation={3} sx={{ padding: 4, width: 350, backgroundColor: '#FFF0F5', color: '#8B008B' }}>
+        <Paper elevation={3} sx={{ padding: 2,  backgroundColor: '#FFF0F5', color: '#8B008B' }}>
           <Typography variant="h5" mb={2}>
             Sign Up
           </Typography>

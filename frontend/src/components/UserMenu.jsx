@@ -1,26 +1,35 @@
-// components/UserMenu.jsx
 import { Box, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
 const UserMenu = ({ user, anchorEl, setAnchorEl, logout }) => {
-  const isAdmin = user?.roles?.includes('Admin');
+  console.log('User object:', user);  
+  const userRoles = user?.roles ?? [];
+  console.log('User roles:', userRoles);  
+
+  const isAdmin = Array.isArray(userRoles) && userRoles.some(r => {
+    if (typeof r === 'string') return r.toLowerCase() === 'admin';  
+    if (typeof r === 'object' && r.rolename) return r.rolename.toLowerCase() === 'admin';  
+    return false;
+  });
+
+  console.log('Is Admin:', isAdmin);  
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '20px', mr: '40px' }}>
       <Typography component="span" mr={2} color='#000' sx={{ fontSize: '1.2rem' }}>
-        {user.roles}: {user.username}
+        {Array.isArray(userRoles) ? userRoles.map(r => typeof r === 'string' ? r : r.rolename).join(', ') : ''}: {user.username}
       </Typography>
       <IconButton size="large" edge="end" color="inherit" onClick={(e) => setAnchorEl(e.currentTarget)}>
         <AccountCircle sx={{ color: 'black' }} />
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
         <MenuItem component={Link} to="/my-tickets" onClick={() => setAnchorEl(null)}>My Ticket</MenuItem>
-        {isAdmin && [
+        {isAdmin ? [
           <MenuItem key="m1" component={Link} to="/admin/movie/new" onClick={() => setAnchorEl(null)}>Create Movie</MenuItem>,
           <MenuItem key="m2" component={Link} to="/admin/sessions/new" onClick={() => setAnchorEl(null)}>Create Session</MenuItem>,
           <MenuItem key="m3" component={Link} to="/admin/sessions" onClick={() => setAnchorEl(null)}>Manage Sessions</MenuItem>
-        ]}
+        ] : null}
         <MenuItem onClick={() => { logout(); setAnchorEl(null); }}>Logout</MenuItem>
       </Menu>
     </Box>

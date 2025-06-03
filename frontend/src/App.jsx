@@ -27,7 +27,7 @@ function App() {
       <Route path="/session/:id" element={<SessionDetailsPage />} />
       <Route path='/admin/movie/new' element={<MovieAddPage/>}/>
       <Route path="/admin/sessions/new" element={<AddSessionPage />} />
-      <Route path="/admin/sessions" element={<UpdateSessionPage />} />
+      <Route path="/admin/sessions" element={<UpdateSessionPage />} /> 
       <Route path="/admin/sessions/update/:id" element={<EditSessionPage />} />
       <Route path="my-tickets" element={<MyTicketsPage />} />
     </Routes>

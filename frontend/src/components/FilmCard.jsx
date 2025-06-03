@@ -6,19 +6,23 @@ const FilmCard = ({ film }) => {
   return (
     <Link to={`/films/${film.movieid}`} style={{ textDecoration: 'none' }}>
     <Box sx={{         
-        m: 2,
-        width: 220,
-        border: '1px solid #DA70D6',
-        borderRadius: 3,
-        boxShadow: 3,
-        overflow: 'hidden',
-        backgroundColor: '#222',
-        p: 1,
-        textAlign: 'center'
-        }}>
+mt: 0,
+ml: 4,
+mb: 4,
+
+width: '300px',
+border: '1px solid #DA70D6',
+borderRadius: 3,
+boxShadow: 3,
+overflow: 'hidden',
+backgroundColor: '#222',
+p: 1,
+textAlign: 'center',
+
+       }}>
         {/* Обёртка под картинку */}
         <Box sx={{
-            width: '100%',
+            width: '95%',
             aspectRatio: '2/3',
             overflow: 'hidden',
             borderRadius: 2,
