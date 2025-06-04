@@ -290,6 +290,33 @@ See on veebirakenduse frontend, mis võimaldab kasutajatel:
 | `SignIn` / `SignUp` | Autentimisvormid                         |
 | `UserMenu`        | Rollipõhine kasutajamenüü                  |
 
+## 📄 Lehed (pages)
+```/``` — Avaleht
 
+```/films/:id``` — FilmDetailPage
 
+```/search-results``` — SearchResults
 
+```/showtime``` — ShowTimePage
+
+```/session/:id``` — SessionDetailsPage
+
+```/auth``` — SignIn/SignUp
+
+```/admin/movie/new``` — MovieAddPage
+
+```/admin/sessions/new``` — AddSessionPage
+
+```/admin/sessions/:id/edit``` — EditSessionPage
+
+```/admin/sessions``` — UpdateSessionPage
+
+```/my-tickets``` — MyTicketsPage
+
+## 🛠️ Tehnoloogiad
+- React (funktsionaalsed komponendid, hooks)
+- Material UI (MUI): UI komponendid ja stilistika
+- React Router: marsruutimine
+- Dayjs + DatePicker: kuupäevade haldus
+- JWT: autentimine
+- Axios: API-päringud
