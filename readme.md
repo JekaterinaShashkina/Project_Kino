@@ -275,19 +275,20 @@ See on veebirakenduse frontend, mis võimaldab kasutajatel:
 - UpdateSessionPage: seansi valik ja redigeerimine
 
 ## Põhikomponendid
-```
-``` Komponent ``` 	    Kirjeldus
-```Header```	      Navigatsioon ja otsing
-```FilmCard```	Ühe filmi lühikaart
-```FilmDetail```	Filmi detailvaade
-```FilmListSection```	Filmide laadimine ja kuvamine avalehel
-```SearchFilters```	Otsingu ja filtreerimise vorm
-```SeatsGrid```	Seansi kohtade valik
-```SessionCard```	Ühe seansi kaart
-```AddMovieForm```	Filmi lisamise vorm (admin)
-```AddSessionForm```	Seansi lisamise/muutmise vorm
-```SignIn / SignUp```	Autentimisvormid
-```UserMenu```	Rollipõhine kasutajamenüü
-```
+
+|``` Komponent ``` | Kirjeldus |
+---------------------------------
+|```Header```	|      Navigatsioon ja otsing |
+|```FilmCard``` |	Ühe filmi lühikaart |
+|```FilmDetail```|	Filmi detailvaade|
+|```FilmListSection```|	Filmide laadimine ja kuvamine avalehel|
+|```SearchFilters```|	Otsingu ja filtreerimise vorm|
+|```SeatsGrid```|	Seansi kohtade valik|
+|```SessionCard```|	Ühe seansi kaart|
+|```AddMovieForm```|	Filmi lisamise vorm (admin)|
+|```AddSessionForm```|	Seansi lisamise/muutmise vorm|
+|```SignIn / SignUp```|	Autentimisvormid|
+|```UserMenu```|	Rollipõhine kasutajamenüü|
+
 
 
