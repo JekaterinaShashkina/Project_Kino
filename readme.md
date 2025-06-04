@@ -14,7 +14,9 @@
     1.1 [Taust](#11-taust)  
     1.2 [Infosüsteemi funktsioonide loetelu](#12-infosüsteemi-funktsioonide-loetelu)  
     1.3 [Tehnoloogia valik](#13-tehnoloogia-valik)  
-
+    2.1 [Paigaldamine ja Swagger](#21-Paigaldamine ja Swagger )
+    2.2 [Kontrollerid ja valideerimine](#22-Kontrollerid ja valideerimine)
+    2.3 [Filtrid ja otsing](#23-Filtrid ja otsing)
 ---
 
 ## 1. Ülevaade
@@ -30,7 +32,7 @@
 
 ---
 
-### 1.2 Infosüsteemi funktsioonide loetelu
+## 1.2 Infosüsteemi funktsioonide loetelu
 
 #### **Administraator:**
 - Filmide, seansside, saalide, kategooriate jne haldamine:
@@ -64,7 +66,7 @@
 Авторитизация в swagger Baerer + space + token
 ---
 
-### 1.3 Tehnoloogia valik
+## 1.3 Tehnoloogia valik
 
 | Komponent | Tehnoloogia |
 |----------|-------------|
@@ -79,12 +81,11 @@
 
 > Projekti eesmärk on luua töökindel ja kasutajasõbralik kinoportaal, mis toetab mitmekülgset haldust ja pakub intuitiivset kasutajakogemust.
 
-
-## Paigaldamine ja Swagger 
+## 1.4 Paigaldamine ja Swagger 
 
 Dokumentatsioon: `http://localhost:3001/api`
 
-## Kontrollid ja valideerimine
+## 1.5 Kontrollerid ja valideerimine
 
 ### Filmid
 - Kohustuslikud väljad: pealkiri, kestus, kuupäev, hinnang, staatus, keel
@@ -117,7 +118,8 @@ Dokumentatsioon: `http://localhost:3001/api`
 - Piletimüük seansside kaupa (kogus, tulu)
 
 - Vaated PostgreSQL-is: `view_sales_summary`, `view_places_with_status`
-## Filtrid ja otsing
+
+## 1.5 Filtrid ja otsing
 
 ###  Filmide otsing ja filtreerimine
 - **Pealkiri (title)**: osaline vaste
@@ -135,7 +137,7 @@ Romance
 /status/:sessionid — seansi kohtade olek (vaba, aktiivne, tagastatud)
 
 
-## Backend
+# Backend
 ```
 cd Project_Kino\
 npx nodemon index.js
@@ -161,18 +163,17 @@ swagger http://localhost:3001/api
 
 Autorizeerimine swaggeris Baerer + space + token
 
-### Управление ролями
-Роли назначает пользователь с ролью manager, по умолчанию добавляется пользователю роль user
-
+### Rollide juhtimine
+Rolli määrab kasutaja manager roliga, vaikimisi lisatakse kasutajale user roll
 
 - `http://localhost:3001/add-role`
 - `http://localhost:3001/remove-role`
 
 
-### Модификации базы данных
+### Andmebaasi midifikatsioon
 
-#### Таблица `ticket`
-Добавление поля статуса:
+#### Tabel `ticket`
+Staatuse määramine
 ```sql
 ALTER TABLE kino.ticket
 ADD COLUMN status VARCHAR(20) NOT NULL DEFAULT 'active';
@@ -182,7 +183,7 @@ ADD CONSTRAINT ticket_status_check
 CHECK (status IN ('active', 'used', 'refunded'));
 ```
 
-#### View для отображения статуса мест
+#### View kohade staatuse kirjeldamiseks
 ```sql
 DROP VIEW IF EXISTS kino.view_places_with_status;
 
@@ -207,7 +208,7 @@ WHERE pr.price > 0;
 SELECT * FROM kino.view_places_with_status WHERE sessionid = 3;
 ```
 
-#### Уникальность в таблице `useraccount`
+#### Tabeli `useraccount` unikaalsus
 
 ```sql
 ALTER TABLE kino.useraccount
@@ -217,7 +218,7 @@ ALTER TABLE kino.useraccount
 ADD CONSTRAINT unique_useremail UNIQUE (useremail);
 ```
 
-### Отчёт по проданным билетам
+### Müüdud piletite aruanne
 ```sql
 CREATE OR REPLACE VIEW kino.view_sales_summary AS
 SELECT
@@ -235,11 +236,58 @@ GROUP BY s.sessionid, s.starttime, m.title;
 
 ---
 
+# Frontend
 
+## Ülevaade
+See on veebirakenduse frontend, mis võimaldab kasutajatel:
+- otsida ja vaadata filme,
+- broneerida pileteid,
+- hallata seansse (administraatorid),
+- registreeruda ja siseneda süsteemi.
+- Rakendus kasutab React + MUI teeki koos JWT-autentimisega ja toetab rollipõhist ligipääsu (User, Admin).
 
+## Peamised funktsioonid
+### 🔐 Autentimine ja rollid
+- Registreerimine (SignUp): kasutajanimi, e-mail, parool (koos valideerimisega)
+- Sisselogimine (SignIn): salvestab JWT-tokeni
+- Rollid: User / Admin
+- Admin saab lisada filme ja seansse, muuta andmeid
 
+### 🧭 Navigatsioon ja kohanduvus
+- Header/Navbar: kohanduv, sisaldab otsingut ja kasutajamenüüd
+- ResponsiveDrawer: mobiilivaates navigeerimine ja filtrid
+- SearchFilters: pealkiri, kategooria, kuupäev
 
+### 🎞️ Filmid
+- Avaleht: kuvab "Top Films" võrgustikuna
+- FilmCard: poster, pealkiri, kategooriad, reiting
+- FilmDetail: detailne info filmi kohta, treiler ja plakat
 
+### 🎟️ Seansid ja piletid
+- ShowTimePage: kõigi seansside loetelu koos kuupäevafiltriga
+- SessionDetailsPage: konkreetne seanss, kohtade valik ja pileti ost
+- SeatsGrid: kohtade võrk koos olekute (vaba, valitud, hõivatud)
+- MyTicketsPage: jaotus eelseisvad ja möödunud/tagastatud piletid
 
+### 🛠️ Administraatori tööriistad
+- AddMovieForm: uue filmi lisamine
+- AddSessionForm: seansi loomine ja muutmine
+- UpdateSessionPage: seansi valik ja redigeerimine
+
+## Põhikomponendid
+```
+``` Komponent ``` 	    Kirjeldus
+```Header```	      Navigatsioon ja otsing
+```FilmCard```	Ühe filmi lühikaart
+```FilmDetail```	Filmi detailvaade
+```FilmListSection```	Filmide laadimine ja kuvamine avalehel
+```SearchFilters```	Otsingu ja filtreerimise vorm
+```SeatsGrid```	Seansi kohtade valik
+```SessionCard```	Ühe seansi kaart
+```AddMovieForm```	Filmi lisamise vorm (admin)
+```AddSessionForm```	Seansi lisamise/muutmise vorm
+```SignIn / SignUp```	Autentimisvormid
+```UserMenu```	Rollipõhine kasutajamenüü
+```
 
 
