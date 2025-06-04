@@ -14,9 +14,22 @@
     1.1 [Taust](#11-taust)  
     1.2 [Infosüsteemi funktsioonide loetelu](#12-infosüsteemi-funktsioonide-loetelu)  
     1.3 [Tehnoloogia valik](#13-tehnoloogia-valik)  
-    2.1 [Paigaldamine ja Swagger](#21-Paigaldamine ja Swagger )
-    2.2 [Kontrollerid ja valideerimine](#22-Kontrollerid ja valideerimine)
-    2.3 [Filtrid ja otsing](#23-Filtrid ja otsing)
+    1.4 [Paigaldamine ja Swagger](#21-paigaldamine-ja-swagger)  
+    1.5 [Kontrollerid ja valideerimine](#22-kontrollerid-ja-valideerimine)  
+    1.6 [Filtrid ja otsing](#23-filtrid-ja-otsing)  
+
+2. [Backend](#2-backend)  
+    2.1 [Autoriseerimise näidised](#21-autoriseerimise-näidised)  
+    2.2 [Rollide juhtimine](#22-rollide-juhtimine)  
+    2.3 [Andmebaasi modifikatsioon](#23-andmebaasi-modifikatsioon)  
+    2.4 [Müüdud piletite aruanne](#24-müüdud-piletite-aruanne)  
+
+3. [Frontend](#3-frontend)  
+    3.1 [Ülevaade](#31-ülevaade)  
+    3.2 [Peamised funktsioonid](#32-peamised-funktsioonid)  
+    3.3 [Põhikomponendid](#33-põhikomponendid)  
+    3.4 [Lehed (pages)](#34-lehed-pages)  
+    3.5 [Tehnoloogiad](#35-tehnoloogiad)
 ---
 
 ## 1. Ülevaade
@@ -119,7 +132,7 @@ Dokumentatsioon: `http://localhost:3001/api`
 
 - Vaated PostgreSQL-is: `view_sales_summary`, `view_places_with_status`
 
-## 1.5 Filtrid ja otsing
+## 1.6 Filtrid ja otsing
 
 ###  Filmide otsing ja filtreerimine
 - **Pealkiri (title)**: osaline vaste
@@ -137,7 +150,7 @@ Romance
 /status/:sessionid — seansi kohtade olek (vaba, aktiivne, tagastatud)
 
 
-# Backend
+## 2. Backend
 ```
 cd Project_Kino\
 npx nodemon index.js
@@ -145,7 +158,7 @@ npx nodemon index.js
 
 swagger http://localhost:3001/api
 
-### autoriseerimise naidised
+### 2.1 autoriseerimise naidised
 
 ```json
 {
@@ -163,14 +176,14 @@ swagger http://localhost:3001/api
 
 Autorizeerimine swaggeris Baerer + space + token
 
-### Rollide juhtimine
+### 2.2 Rollide juhtimine
 Rolli määrab kasutaja manager roliga, vaikimisi lisatakse kasutajale user roll
 
 - `http://localhost:3001/add-role`
 - `http://localhost:3001/remove-role`
 
 
-### Andmebaasi midifikatsioon
+### 2.3 Andmebaasi midifikatsioon
 
 #### Tabel `ticket`
 Staatuse määramine
@@ -218,7 +231,7 @@ ALTER TABLE kino.useraccount
 ADD CONSTRAINT unique_useremail UNIQUE (useremail);
 ```
 
-### Müüdud piletite aruanne
+### 2.4. Müüdud piletite aruanne
 ```sql
 CREATE OR REPLACE VIEW kino.view_sales_summary AS
 SELECT
@@ -236,9 +249,9 @@ GROUP BY s.sessionid, s.starttime, m.title;
 
 ---
 
-# Frontend
+## 3. Frontend
 
-## Ülevaade
+### 3.1 Ülevaade
 See on veebirakenduse frontend, mis võimaldab kasutajatel:
 - otsida ja vaadata filme,
 - broneerida pileteid,
@@ -246,35 +259,35 @@ See on veebirakenduse frontend, mis võimaldab kasutajatel:
 - registreeruda ja siseneda süsteemi.
 - Rakendus kasutab React + MUI teeki koos JWT-autentimisega ja toetab rollipõhist ligipääsu (User, Admin).
 
-## Peamised funktsioonid
-### 🔐 Autentimine ja rollid
+### 3.2 Peamised funktsioonid
+#### 🔐 Autentimine ja rollid
 - Registreerimine (SignUp): kasutajanimi, e-mail, parool (koos valideerimisega)
 - Sisselogimine (SignIn): salvestab JWT-tokeni
 - Rollid: User / Admin
 - Admin saab lisada filme ja seansse, muuta andmeid
 
-### 🧭 Navigatsioon ja kohanduvus
+#### 🧭 Navigatsioon ja kohanduvus
 - Header/Navbar: kohanduv, sisaldab otsingut ja kasutajamenüüd
 - ResponsiveDrawer: mobiilivaates navigeerimine ja filtrid
 - SearchFilters: pealkiri, kategooria, kuupäev
 
-### 🎞️ Filmid
+#### 🎞️ Filmid
 - Avaleht: kuvab "Top Films" võrgustikuna
 - FilmCard: poster, pealkiri, kategooriad, reiting
 - FilmDetail: detailne info filmi kohta, treiler ja plakat
 
-### 🎟️ Seansid ja piletid
+#### 🎟️ Seansid ja piletid
 - ShowTimePage: kõigi seansside loetelu koos kuupäevafiltriga
 - SessionDetailsPage: konkreetne seanss, kohtade valik ja pileti ost
 - SeatsGrid: kohtade võrk koos olekute (vaba, valitud, hõivatud)
 - MyTicketsPage: jaotus eelseisvad ja möödunud/tagastatud piletid
 
-### 🛠️ Administraatori tööriistad
+#### 🛠️ Administraatori tööriistad
 - AddMovieForm: uue filmi lisamine
 - AddSessionForm: seansi loomine ja muutmine
 - UpdateSessionPage: seansi valik ja redigeerimine
 
-## Põhikomponendid
+### 3.3 Põhikomponendid
 
 | **Komponent**     | **Kirjeldus**                              |
 |-------------------|--------------------------------------------|
@@ -290,7 +303,7 @@ See on veebirakenduse frontend, mis võimaldab kasutajatel:
 | `SignIn` / `SignUp` | Autentimisvormid                         |
 | `UserMenu`        | Rollipõhine kasutajamenüü                  |
 
-## 📄 Lehed (pages)
+### 3.4 📄 Lehed (pages)
 ```/``` — Avaleht
 
 ```/films/:id``` — FilmDetailPage
@@ -313,7 +326,7 @@ See on veebirakenduse frontend, mis võimaldab kasutajatel:
 
 ```/my-tickets``` — MyTicketsPage
 
-## 🛠️ Tehnoloogiad
+### 3.5 🛠️ Tehnoloogiad
 - React (funktsionaalsed komponendid, hooks)
 - Material UI (MUI): UI komponendid ja stilistika
 - React Router: marsruutimine
